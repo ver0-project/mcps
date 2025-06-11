@@ -12,3 +12,6 @@ coverage
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Ensure GitHub issue templates are tracked
+# (do not add .github/ISSUE_TEMPLATE/ to ignore list)

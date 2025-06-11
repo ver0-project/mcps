@@ -1,0 +1,49 @@
+name: "✨ Feature Request"
+description: "Suggest a new feature or improvement for the monorepo (specify affected package)"
+title: "[Feature]: <short summary>"
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: "Relevant package(s)"
+      description: "Which package(s) in the monorepo does this feature request concern?"
+      multiple: true
+      options:
+        - mcp-git
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Feature Description"
+      description: "Describe the feature or improvement you would like to see."
+      placeholder: "A clear and concise description of the feature."
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Motivation and Context"
+      description: "Why is this feature important? What problem does it solve?"
+      placeholder: "Explain your use case or the problem you are facing."
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: "Alternatives Considered"
+      description: "Have you considered any alternative solutions or features?"
+      placeholder: "Describe any alternatives you've considered."
+  - type: textarea
+    id: additional
+    attributes:
+      label: "Additional Context"
+      description: "Add any other context, screenshots, or references here."
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "I have searched the existing issues."
+          required: true

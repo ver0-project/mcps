@@ -1,0 +1,60 @@
+name: "🐞 Bug Report"
+description: "Report a reproducible bug in the monorepo (specify affected package)"
+title: "[Bug]: <short summary>"
+labels: [bug]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: "Affected package(s)"
+      description: "Which package(s) in the monorepo are affected?"
+      multiple: true
+      options:
+        - mcp-git
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: "Bug Description"
+      description: "A clear and concise description of what the bug is."
+      placeholder: "Describe the bug in detail."
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to Reproduce"
+      description: "How can we reproduce the bug? Please provide a minimal reproducible example."
+      placeholder: "1. Go to ...\n2. Run ...\n3. See error ..."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: "Expected Behavior"
+      description: "What did you expect to happen?"
+      placeholder: "A clear and concise description of what you expected to happen."
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Environment"
+      description: "Please provide relevant environment details."
+      placeholder: "OS, Node.js version, package version, etc."
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Relevant logs/output"
+      description: "Paste any error messages or logs here."
+      render: shell
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: "Confirmation"
+      options:
+        - label: "I have searched the existing issues."
+          required: true
