@@ -1,6 +1,4 @@
-import {describe, it, expect, beforeEach} from 'vitest';
-import {z} from 'zod';
-import {simpleGit} from 'simple-git';
+import {beforeEach, describe, expect, it} from 'vitest';
 import {GitStatusTool} from './status.js';
 
 describe('GitStatusTool', () => {

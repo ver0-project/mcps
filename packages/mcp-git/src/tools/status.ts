@@ -1,6 +1,6 @@
 import type {McpServer, ToolCallback} from '@modelcontextprotocol/sdk/server/mcp.js';
+import type {Options} from 'simple-git';
 import {simpleGit} from 'simple-git';
-import type {Options, TaskOptions} from 'simple-git';
 import {z} from 'zod';
 import type {ToolConfig} from '../types.js';
 
@@ -199,7 +199,7 @@ export class GitStatusTool {
 				},
 				{
 					type: 'text',
-					text: JSON.stringify(status, null, 2),
+					text: JSON.stringify(status),
 				},
 			],
 		};

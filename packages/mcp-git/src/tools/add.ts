@@ -1,6 +1,5 @@
 import type {McpServer, ToolCallback} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {simpleGit} from 'simple-git';
-import type {TaskOptions} from 'simple-git';
 import {z} from 'zod';
 import type {ToolConfig} from '../types.js';
 
