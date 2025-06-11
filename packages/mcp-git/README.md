@@ -33,6 +33,9 @@ The server provides the following Git operations:
 
 10. **`diff`** - Show differences between commits, branches, or files
 
+> [!NOTE]
+> Server intentionally lacks push operations to avoid security risks.
+
 ## Tool Details
 
 ### git_status
