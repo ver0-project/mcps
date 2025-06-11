@@ -8,7 +8,7 @@ An MCP (Model Context Protocol) server that provides various Git operations as t
 - `log`
 - `commit`
 - `add`
-- `branch`
+- `create-branch`
 - `checkout`
 - `merge`
 - `rebase`
@@ -16,3 +16,5 @@ An MCP (Model Context Protocol) server that provides various Git operations as t
 - `stash`
 - `tag`
 - `fetch`
+- `show` 
+- `diff`

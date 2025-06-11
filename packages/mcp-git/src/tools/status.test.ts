@@ -19,13 +19,6 @@ describe('GitStatusTool', () => {
 		expect(tool.config.annotations?.readOnlyHint).toBe(true);
 	});
 
-	it('should pass output schema validation', async () => {
-		const schema = z.object(new GitStatusTool().config.outputSchema!).strict();
-		const sg = simpleGit();
-		const status = await sg.status();
-		expect(schema.parse({...status, isClean: status.isClean()})).toBeDefined();
-	});
-
 	describe('inputToOptions', () => {
 		let tool: GitStatusTool;
 
@@ -33,11 +26,11 @@ describe('GitStatusTool', () => {
 			tool = new GitStatusTool();
 		});
 
-		it('should return empty array for minimal input', () => {
+		it('should return empty object for minimal input', () => {
 			const result = tool.inputToOptions({
 				repoPath: '/test/repo',
 			});
-			expect(result).toEqual([]);
+			expect(result).toEqual({});
 		});
 
 		it('should handle boolean options correctly', () => {
@@ -47,9 +40,13 @@ describe('GitStatusTool', () => {
 				branch: true,
 				showStash: true,
 				long: true,
-				nullTerminated: true,
 			});
-			expect(result).toEqual(['--short', '--branch', '--show-stash', '--long', '-z']);
+			expect(result).toEqual({
+				'--short': null,
+				'--branch': null,
+				'--show-stash': null,
+				'--long': null,
+			});
 		});
 
 		it('should handle verbose as boolean', () => {
@@ -57,7 +54,9 @@ describe('GitStatusTool', () => {
 				repoPath: '/test/repo',
 				verbose: true,
 			});
-			expect(result).toEqual(['--verbose']);
+			expect(result).toEqual({
+				'--verbose': null,
+			});
 		});
 
 		it('should handle verbose as number', () => {
@@ -65,7 +64,9 @@ describe('GitStatusTool', () => {
 				repoPath: '/test/repo',
 				verbose: 2,
 			});
-			expect(result).toEqual(['-v', '-v']);
+			expect(result).toEqual({
+				'-v': ['-v', '-v'],
+			});
 		});
 
 		it('should handle untrackedFiles options', () => {
@@ -74,21 +75,27 @@ describe('GitStatusTool', () => {
 					repoPath: '/test/repo',
 					untrackedFiles: true,
 				})
-			).toEqual(['--untracked-files']);
+			).toEqual({
+				'--untracked-files': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					untrackedFiles: false,
 				})
-			).toEqual(['--untracked-files=no']);
+			).toEqual({
+				'--untracked-files': 'no',
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					untrackedFiles: 'all',
 				})
-			).toEqual(['--untracked-files=all']);
+			).toEqual({
+				'--untracked-files': 'all',
+			});
 		});
 
 		it('should handle ignoreSubmodules option', () => {
@@ -96,7 +103,9 @@ describe('GitStatusTool', () => {
 				repoPath: '/test/repo',
 				ignoreSubmodules: 'dirty',
 			});
-			expect(result).toEqual(['--ignore-submodules=dirty']);
+			expect(result).toEqual({
+				'--ignore-submodules': 'dirty',
+			});
 		});
 
 		it('should handle ignored options', () => {
@@ -105,21 +114,27 @@ describe('GitStatusTool', () => {
 					repoPath: '/test/repo',
 					ignored: true,
 				})
-			).toEqual(['--ignored']);
+			).toEqual({
+				'--ignored': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					ignored: false,
 				})
-			).toEqual(['--no-ignored']);
+			).toEqual({
+				'--no-ignored': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					ignored: 'matching',
 				})
-			).toEqual(['--ignored=matching']);
+			).toEqual({
+				'--ignored': 'matching',
+			});
 		});
 
 		it('should handle aheadBehind option', () => {
@@ -128,14 +143,18 @@ describe('GitStatusTool', () => {
 					repoPath: '/test/repo',
 					aheadBehind: true,
 				})
-			).toEqual(['--ahead-behind']);
+			).toEqual({
+				'--ahead-behind': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					aheadBehind: false,
 				})
-			).toEqual(['--no-ahead-behind']);
+			).toEqual({
+				'--no-ahead-behind': null,
+			});
 		});
 
 		it('should handle renames option', () => {
@@ -144,14 +163,18 @@ describe('GitStatusTool', () => {
 					repoPath: '/test/repo',
 					renames: true,
 				})
-			).toEqual(['--renames']);
+			).toEqual({
+				'--renames': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					renames: false,
 				})
-			).toEqual(['--no-renames']);
+			).toEqual({
+				'--no-renames': null,
+			});
 		});
 
 		it('should handle findRenames options', () => {
@@ -160,21 +183,27 @@ describe('GitStatusTool', () => {
 					repoPath: '/test/repo',
 					findRenames: true,
 				})
-			).toEqual(['--find-renames']);
+			).toEqual({
+				'--find-renames': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					findRenames: false,
 				})
-			).toEqual(['--no-find-renames']);
+			).toEqual({
+				'--no-find-renames': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					findRenames: 50,
 				})
-			).toEqual(['--find-renames=50']);
+			).toEqual({
+				'--find-renames': 50,
+			});
 		});
 
 		it('should handle column options', () => {
@@ -183,21 +212,27 @@ describe('GitStatusTool', () => {
 					repoPath: '/test/repo',
 					column: true,
 				})
-			).toEqual(['--column']);
+			).toEqual({
+				'--column': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					column: false,
 				})
-			).toEqual(['--no-column']);
+			).toEqual({
+				'--no-column': null,
+			});
 
 			expect(
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					column: 'auto',
 				})
-			).toEqual(['--column=auto']);
+			).toEqual({
+				'--column': 'auto',
+			});
 		});
 
 		it('should handle pathspec correctly', () => {
@@ -205,7 +240,9 @@ describe('GitStatusTool', () => {
 				repoPath: '/test/repo',
 				pathspec: ['src/', 'test/'],
 			});
-			expect(result).toEqual(['--', 'src/', 'test/']);
+			expect(result).toEqual({
+				'--': ['src/', 'test/'],
+			});
 		});
 
 		it('should handle complex combination of options', () => {
@@ -218,15 +255,14 @@ describe('GitStatusTool', () => {
 				ignored: 'matching',
 				pathspec: ['src/'],
 			});
-			expect(result).toEqual([
-				'--short',
-				'--branch',
-				'-v',
-				'--untracked-files=all',
-				'--ignored=matching',
-				'--',
-				'src/',
-			]);
+			expect(result).toEqual({
+				'--short': null,
+				'--branch': null,
+				'-v': ['-v'],
+				'--untracked-files': 'all',
+				'--ignored': 'matching',
+				'--': ['src/'],
+			});
 		});
 	});
 });

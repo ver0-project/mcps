@@ -1,9 +1,8 @@
 ---
-description:
-  'APPLY when working with mcp-git package TO understand package structure, architecture, available tools, and
-  development guidelines'
-globs:
-alwaysApply: false
+description: 'APPLY when working with mcp-git package TO understand package structure, architecture, available tools,
+and development guidelines'
+globs: 
+
 ---
 
 # MCP Git Package Overview
@@ -42,20 +41,18 @@ packages/mcp-git/
 
 The package implements the following Git operations as MCP tools:
 
-| Tool       | Status         | Description                                          |
-| ---------- | -------------- | ---------------------------------------------------- |
-| `status`   | ✅ Implemented | Get repository status with detailed file information |
-| `add`      | ✅ Implemented | Stage files for commit                               |
-| `commit`   | ✅ Implemented | Create commits with messages                         |
-| `log`      | 📋 Planned     | View commit history                                  |
-| `branch`   | 📋 Planned     | Branch management operations                         |
-| `checkout` | 📋 Planned     | Switch branches/commits                              |
-| `merge`    | 📋 Planned     | Merge branches                                       |
-| `rebase`   | 📋 Planned     | Rebase operations                                    |
-| `reset`    | 📋 Planned     | Reset repository state                               |
-| `stash`    | 📋 Planned     | Stash management                                     |
-| `tag`      | 📋 Planned     | Tag operations                                       |
-| `fetch`    | 📋 Planned     | Fetch from remotes                                   |
+| Tool            | Status         | Description                                          |
+| --------------- | -------------- | ---------------------------------------------------- |
+| `status`        | ✅ Implemented | Get repository status with detailed file information |
+| `add`           | ✅ Implemented | Stage files for commit                               |
+| `commit`        | ✅ Implemented | Create commits with messages                         |
+| `log`           | ✅ Implemented | View commit history with filtering options           |
+| `create-branch` | ✅ Implemented | Create new branches from any starting point          |
+| `checkout`      | ✅ Implemented | Switch branches/commits                              |
+| `merge`         | 📋 Planned     | Merge branches                                       |
+| `rebase`        | 📋 Planned     | Rebase operations                                    |
+| `reset`         | 📋 Planned     | Reset repository state                               |
+| `tag`           | 📋 Planned     | Tag operations                                       |
 
 ## Tool Implementation Pattern
 
@@ -74,6 +71,7 @@ Each Git tool follows a consistent pattern:
 - **Error Handling**: Provide meaningful error messages for Git operation failures
 - **Types**: Maintain type safety throughout the codebase
 - **Documentation**: Document all tool parameters and return values
+- **Package management**: Use `yarn` for package management
 
 ## Dependencies
 

@@ -49,15 +49,13 @@ export class GitAddTool {
 		}
 
 		// Execute git add
-		const result = await sg.add(input.files);
-
-		console.log('result', result);
+		await sg.add(input.files);
 
 		return {
 			content: [
 				{
 					type: 'text',
-					text: `Files added to staging area. ${JSON.stringify(result)}`,
+					text: `Files added to staging area.`,
 				},
 			],
 		};
