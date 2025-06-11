@@ -1,0 +1,52 @@
+{
+	"name": "@ver0-project/mcp-git",
+	"version": "0.1.0",
+	"description": "MCP tools for Git operations",
+	"keywords": [
+		"mcp",
+		"git"
+	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/ver0-project/mcps"
+	},
+	"bugs": {
+		"url": "https://github.com/ver0-project/mcps/issues"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"license": "MIT",
+	"author": "Anton Zinovyev <xog3@yandex.ru>",
+	"engines": {
+		"node": ">=18"
+	},
+	"type": "module",
+	"files": [
+		"dist"
+	],
+	"main": "dist/index.js",
+	"bin": "dist/index.js",
+	"scripts": {
+		"build": "yarn build:clean && yarn tsc -p tsconfig.build.json",
+		"build:clean": "rimraf dist",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"test": "vitest --run",
+		"test:coverage": "vitest --run --coverage"
+	},
+	"dependencies": {
+		"@modelcontextprotocol/sdk": "^1.12.1",
+		"simple-git": "^3.28.0",
+		"zod": "^3.25.61"
+	},
+	"devDependencies": {
+		"@types/node": "^24.0.0",
+		"@ver0/eslint-config": "^1.2.2",
+		"@vitest/coverage-v8": "^3.2.3",
+		"eslint": "^9.28.0",
+		"rimraf": "^6.0.1",
+		"typescript": "^5.8.3",
+		"vitest": "^3.2.3"
+	}
+}

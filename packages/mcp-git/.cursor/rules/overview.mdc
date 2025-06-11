@@ -1,0 +1,90 @@
+---
+description:
+  'APPLY when working with mcp-git package TO understand package structure, architecture, available tools, and
+  development guidelines'
+globs:
+alwaysApply: false
+---
+
+# MCP Git Package Overview
+
+## Package Context
+
+- **Name**: `@ver0-project/mcp-git`
+- **Purpose**: MCP (Model Context Protocol) server that provides Git operations as tools for AI assistants and
+  applications
+- **Repository**: Part of the `@ver0-project/mcps` monorepo
+- **Entry Point**: `src/index.ts` - main MCP server setup
+- **Build Target**: `dist/index.js` - compiled JavaScript output
+- **Node Version**: Requires Node.js >= 18
+
+## Architecture Overview
+
+### Core Components
+
+- **MCP Server**: Built using `@modelcontextprotocol/sdk` for protocol compliance
+- **Git Integration**: Uses `simple-git` library for Git operations
+- **Type Safety**: Implements Zod schemas for input validation
+- **Transport**: Uses stdio transport for communication with AI assistants
+
+### Directory Structure
+
+```
+packages/mcp-git/
+├── src/
+│   ├── index.ts          # Main server entry point and tool registration
+│   ├── types.ts          # Shared type definitions
+│   └── tools/            # Individual Git tool implementations
+└── package.json          # Package configuration
+```
+
+## Available Git Tools
+
+The package implements the following Git operations as MCP tools:
+
+| Tool       | Status         | Description                                          |
+| ---------- | -------------- | ---------------------------------------------------- |
+| `status`   | ✅ Implemented | Get repository status with detailed file information |
+| `add`      | ✅ Implemented | Stage files for commit                               |
+| `commit`   | ✅ Implemented | Create commits with messages                         |
+| `log`      | 📋 Planned     | View commit history                                  |
+| `branch`   | 📋 Planned     | Branch management operations                         |
+| `checkout` | 📋 Planned     | Switch branches/commits                              |
+| `merge`    | 📋 Planned     | Merge branches                                       |
+| `rebase`   | 📋 Planned     | Rebase operations                                    |
+| `reset`    | 📋 Planned     | Reset repository state                               |
+| `stash`    | 📋 Planned     | Stash management                                     |
+| `tag`      | 📋 Planned     | Tag operations                                       |
+| `fetch`    | 📋 Planned     | Fetch from remotes                                   |
+
+## Tool Implementation Pattern
+
+Each Git tool follows a consistent pattern:
+
+- Extends base tool interface
+- Implements Zod schema for parameter validation
+- Uses `simple-git` for Git operations
+- Provides comprehensive error handling
+- Includes unit tests
+
+## Development Guidelines
+
+- **Testing**: Each tool must have corresponding `.test.ts` file with comprehensive coverage
+- **Validation**: Use Zod schemas for all tool parameters
+- **Error Handling**: Provide meaningful error messages for Git operation failures
+- **Types**: Maintain type safety throughout the codebase
+- **Documentation**: Document all tool parameters and return values
+
+## Dependencies
+
+### Runtime Dependencies
+
+- `@modelcontextprotocol/sdk`: MCP protocol implementation
+- `simple-git`: Git operations library
+- `zod`: Schema validation
+
+## Usage Context
+
+This package is designed to be used as an MCP server that AI assistants can connect to for performing Git operations. It
+provides a structured, validated interface for common Git workflows while maintaining type safety and proper error
+handling.
