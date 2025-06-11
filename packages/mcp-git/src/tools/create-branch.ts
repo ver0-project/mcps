@@ -57,56 +57,67 @@ export class GitCreateBranchTool {
 			};
 		}
 
-		try {
-			let message: string;
-			let switched = false;
-			const startPoint = input.startPoint || 'HEAD';
+		const startPoint = input.startPoint ?? 'HEAD';
 
-			// Create the branch
-			if (input.force) {
-				// Force create branch (equivalent to git checkout -B)
-				if (input.switchToBranch) {
-					await sg.checkout(['-B', input.branchName, startPoint]);
-					switched = true;
-					message = `Force created and switched to branch '${input.branchName}' from '${startPoint}'`;
-				} else {
-					await sg.branch(['-B', input.branchName, startPoint]);
-					message = `Force created branch '${input.branchName}' from '${startPoint}'`;
-				}
-			} else {
-				// Regular branch creation
-				if (input.switchToBranch) {
-					if (input.startPoint) {
-						await sg.checkoutBranch(input.branchName, input.startPoint);
-					} else {
-						await sg.checkoutLocalBranch(input.branchName);
-					}
-					switched = true;
-					message = `Created and switched to branch '${input.branchName}'${input.startPoint ? ` from '${input.startPoint}'` : ''}`;
-				} else {
-					await sg.branch([input.branchName, startPoint]);
-					message = `Created branch '${input.branchName}' from '${startPoint}'`;
-				}
-			}
-
+		// Force create branch with switch (equivalent to git checkout -B)
+		if (input.force && input.switchToBranch) {
+			await sg.checkout(['-B', input.branchName, startPoint]);
 			return {
 				content: [
 					{
 						type: 'text',
-						text: message,
-					},
-				],
-			};
-		} catch (error) {
-			return {
-				isError: true,
-				content: [
-					{
-						type: 'text',
-						text: `Branch creation failed: ${error instanceof Error ? error.message : 'Unknown error'}`,
+						text: `Force created and switched to branch '${input.branchName}' from '${startPoint}'`,
 					},
 				],
 			};
 		}
+
+		// Force create branch without switch
+		if (input.force) {
+			const result = await sg.branch(['-B', input.branchName, startPoint]);
+			return {
+				content: [
+					{
+						type: 'text',
+						text: `Force created branch '${input.branchName}' from '${startPoint}'`,
+					},
+					{
+						type: 'text',
+						text: JSON.stringify(result),
+					},
+				],
+			};
+		}
+
+		// Regular branch creation with switch
+		if (input.switchToBranch) {
+			await (input.startPoint
+				? sg.checkoutBranch(input.branchName, input.startPoint)
+				: sg.checkoutLocalBranch(input.branchName));
+			return {
+				content: [
+					{
+						type: 'text',
+						text: `Created and switched to branch '${input.branchName}'${input.startPoint ? ` from '${input.startPoint}'` : ''}`,
+					},
+				],
+			};
+		}
+
+		// Regular branch creation without switch
+		const result = await sg.branch([input.branchName, startPoint]);
+
+		return {
+			content: [
+				{
+					type: 'text',
+					text: `Created branch '${input.branchName}' from '${startPoint}'`,
+				},
+				{
+					type: 'text',
+					text: JSON.stringify(result),
+				},
+			],
+		};
 	};
 }

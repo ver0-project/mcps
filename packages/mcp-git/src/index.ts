@@ -6,6 +6,10 @@ import {GitCommitTool} from './tools/commit.js';
 import {GitLogTool} from './tools/log.js';
 import {GitCreateBranchTool} from './tools/create-branch.js';
 import {GitCheckoutTool} from './tools/checkout.js';
+import {GitResetTool} from './tools/reset.js';
+import {GitDiffTool} from './tools/diff.js';
+import {GitShowTool} from './tools/show.js';
+import {GitInitTool} from './tools/init.js';
 
 const server = new McpServer({
 	name: 'mcp-git',
@@ -19,6 +23,10 @@ new GitCommitTool().register(server);
 new GitLogTool().register(server);
 new GitCreateBranchTool().register(server);
 new GitCheckoutTool().register(server);
+new GitResetTool().register(server);
+new GitDiffTool().register(server);
+new GitShowTool().register(server);
+new GitInitTool().register(server);
 
 const transport = new StdioServerTransport();
 await server.connect(transport);

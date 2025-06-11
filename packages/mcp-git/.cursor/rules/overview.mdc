@@ -49,10 +49,10 @@ The package implements the following Git operations as MCP tools:
 | `log`           | ✅ Implemented | View commit history with filtering options           |
 | `create-branch` | ✅ Implemented | Create new branches from any starting point          |
 | `checkout`      | ✅ Implemented | Switch branches/commits                              |
-| `merge`         | 📋 Planned     | Merge branches                                       |
-| `rebase`        | 📋 Planned     | Rebase operations                                    |
-| `reset`         | 📋 Planned     | Reset repository state                               |
-| `tag`           | 📋 Planned     | Tag operations                                       |
+| `reset`         | ✅ Implemented | Reset repository state (soft, mixed, hard)           |
+| `diff`          | ✅ Implemented | Show differences between commits, branches, files    |
+| `show`          | ✅ Implemented | Display commit details and changes                   |
+| `init`          | ✅ Implemented | Initialize new Git repository                        |
 
 ## Tool Implementation Pattern
 
