@@ -9,9 +9,6 @@ on:
       - master
   workflow_dispatch:
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-
 jobs:
   detect-packages:
     name: Detect packages
