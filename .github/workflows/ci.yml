@@ -1,0 +1,102 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  detect-packages:
+    name: Detect packages
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.find-packages.outputs.packages }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - name: Find packages
+        id: find-packages
+        run: |
+          set -e
+          yarn workspaces list --json | jq -s '[.[] | select(.location != ".") | {name, location}]' > packages.json
+          if [ ! -s packages.json ]; then
+            echo "No packages detected or yarn failed. Exiting."
+            exit 1
+          fi
+          echo "packages<<EOF" >> $GITHUB_OUTPUT
+          cat packages.json >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  lint:
+    name: Lint (${{ matrix.package.name }})
+    runs-on: ubuntu-latest
+    needs: detect-packages
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.detect-packages.outputs.packages) }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup-yarn
+      - name: Run lint
+        run: yarn lint -f @ver0/gha
+        working-directory: ${{ matrix.package.location }}
+
+  test:
+    name: Test (${{ matrix.package.name }})
+    runs-on: ubuntu-latest
+    needs: detect-packages
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.detect-packages.outputs.packages) }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup-yarn
+      - name: Run tests
+        run: yarn test
+        working-directory: ${{ matrix.package.location }}
+
+  build:
+    name: Build (${{ matrix.package.name }})
+    runs-on: ubuntu-latest
+    needs: detect-packages
+    strategy:
+      matrix:
+        package: ${{ fromJson(needs.detect-packages.outputs.packages) }}
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup
+        uses: ./.github/actions/setup-yarn
+      - name: Run build
+        run: yarn build
+        working-directory: ${{ matrix.package.location }}
+
+  dependabot-merge:
+    name: "Dependabot automerge"
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    needs: [ "test", "build", "lint" ]
+    if: github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'
+    steps:
+      - uses: fastify/github-action-merge-dependabot@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

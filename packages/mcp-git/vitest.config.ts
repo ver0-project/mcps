@@ -12,9 +12,4 @@ export default defineConfig({
 			exclude: ['node_modules/', 'dist/', '**/*.{test,spec}.{js,ts}'],
 		},
 	},
-	resolve: {
-		alias: {
-			'@': new URL('./src', import.meta.url).pathname,
-		},
-	},
 });

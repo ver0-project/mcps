@@ -186,13 +186,11 @@ Initializes a new Git repository.
 
 ```json
 {
-	"mcpServers": {
-		"git": {
-			"command": "npx",
-			"args": [
-				"-y", "@ver0-project/mcp-git"
-			]
-		}
-	}
+  "mcpServers": {
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@ver0-project/mcp-git"]
+    }
+  }
 }
 ```
