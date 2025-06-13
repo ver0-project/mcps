@@ -956,6 +956,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mixmark-io/domino@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "@mixmark-io/domino@npm:2.2.0"
+  checksum: 10c0/aa468a15f9217d425220fe6a4b3f9416cbe8e566ee14efc191c6d5cc04fe39338b16a90bbac190f28d44e69465db5f2cf95f479c621ce38060ca6b2a3d346e9d
+  languageName: node
+  linkType: hard
+
 "@modelcontextprotocol/sdk@npm:^1.12.1, @modelcontextprotocol/sdk@npm:^1.12.2":
   version: 1.12.2
   resolution: "@modelcontextprotocol/sdk@npm:1.12.2"
@@ -1285,6 +1292,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/turndown@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "@types/turndown@npm:5.0.5"
+  checksum: 10c0/d6b4f8451caf72399f36f810461baf5f3b5e958ff216388bb3324a9949079daad31d970a28a140b3571db8793908396e757329334f5dc8bcff414698b8c31113
+  languageName: node
+  linkType: hard
+
 "@types/unist@npm:*, @types/unist@npm:^3.0.0":
   version: 3.0.3
   resolution: "@types/unist@npm:3.0.3"
@@ -1503,11 +1517,13 @@ __metadata:
     "@minify-html/node": "npm:^0.16.4"
     "@modelcontextprotocol/sdk": "npm:^1.12.1"
     "@types/node": "npm:^24.0.1"
+    "@types/turndown": "npm:^5.0.5"
     "@ver0/eslint-config": "npm:^1.2.2"
     "@ver0/eslint-formatter-gha": "npm:^1.0.1"
     "@vitest/coverage-v8": "npm:^3.2.3"
     eslint: "npm:^9.28.0"
     rimraf: "npm:^6.0.1"
+    turndown: "npm:^7.2.0"
     typescript: "npm:^5.8.3"
     vitest: "npm:^3.2.3"
     zod: "npm:^3.23.8"
@@ -6776,6 +6792,15 @@ __metadata:
   version: 0.0.6
   resolution: "tunnel@npm:0.0.6"
   checksum: 10c0/e27e7e896f2426c1c747325b5f54efebc1a004647d853fad892b46d64e37591ccd0b97439470795e5262b5c0748d22beb4489a04a0a448029636670bfd801b75
+  languageName: node
+  linkType: hard
+
+"turndown@npm:^7.2.0":
+  version: 7.2.0
+  resolution: "turndown@npm:7.2.0"
+  dependencies:
+    "@mixmark-io/domino": "npm:^2.2.0"
+  checksum: 10c0/6abcdcdf9d35cd79d7a8100a7de1d2226b921d5bd99e73ac14a7ead39c059978f519378913375efb04c68bcfc40f7ffe2dee0ce9ae4d54dc1235b12856a78d4e
   languageName: node
   linkType: hard
 

@@ -62,3 +62,19 @@ export function inputToRequestOptions(input: HttpFetchInput): RequestInit {
 export function trimString(input: string, start = 0, end = input.length): string {
 	return input.slice(start, end);
 }
+
+const HTML_CONTENT_TYPES = new Set(['text/html', 'application/xhtml+xml', 'application/xhtml']);
+/**
+ * Checks if the given content type indicates HTML content
+ */
+export function isHtmlContentType(contentType: string | null): boolean {
+	if (!contentType) {
+		return false;
+	}
+
+	// as content type can contain additional data separated with a semicolon,
+	// we need to trim the string to get the actual content type
+	const trimmedContentType = contentType.toLowerCase().split(';')[0].trim();
+
+	return HTML_CONTENT_TYPES.has(trimmedContentType);
+}

@@ -1,5 +1,5 @@
 ---
-"@ver0/mcp-http-fetch": patch
+"@ver0/mcp-http-fetch": minor
 ---
 
-initial implementation of fetch-html tool
+Initial implementation of package with fetch-html, fetch-markdown and fetch-json tools

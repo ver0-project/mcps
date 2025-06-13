@@ -9,12 +9,11 @@ The server provides the following HTTP fetch operations:
 ### Available Tools
 
 1. **`fetch-html`** ✅ - Fetch HTML content with optional minification
+2. **`fetch-markdown`** ✅ - Fetch HTML and convert to markdown
 
 ### Planned Tools
 
-2. **`fetch-text`** 🚧 - Fetch plain text content
-3. **`fetch-markdown`** 🚧 - Fetch and process Markdown content  
-4. **`fetch-json`** 🚧 - Fetch and parse JSON content
+3. **`fetch-json`** 🚧 - Fetch and parse JSON content
 
 ## Tool Details
 
@@ -24,7 +23,7 @@ Fetches HTML content from a URL with optional minification and content limiting 
 
 **Features:**
 - Automatic browser-like headers (Accept, User-Agent) if not provided
-- Optional HTML minification using `@minify-html/node`
+- Optional HTML minification using `@minify-html/node` (only applied when response content-type is HTML)
 - Start and end parameters to limit content or retrieve it in chunks.
 
 **Inputs:**
@@ -41,6 +40,33 @@ Fetches HTML content from a URL with optional minification and content limiting 
 
 **Auto-set Headers:**
 - `Accept`: Set to HTML types if not provided
+- `User-Agent`: Set to browser-like string if not provided
+
+### fetch-markdown
+
+Fetches HTML content from a URL and converts it to markdown format for better readability and token efficiency.
+
+**Features:**
+- Automatic markdown-prioritized headers (Accept: text/markdown, text/x-markdown, application/markdown, then HTML types)
+- High-quality HTML to markdown conversion using `turndown` library
+- ATX-style headings, fenced code blocks, proper formatting
+- Enhanced support for strikethrough and table elements
+- Start and end parameters for content limiting
+- Comprehensive error handling with fallback to original content
+
+**Inputs:**
+
+- `uri` (string): The URL to fetch
+- `method` (string, optional): HTTP method (default: GET)
+- `headers` (object, optional): Custom HTTP headers
+- `body` (string, optional): Request body for POST/PUT requests
+- `followRedirects` (boolean, optional): Whether to follow redirects (default: true)
+- `timeout` (number, optional): Request timeout in milliseconds
+- `start` (number, optional): Start character position to return from the content, defaults to 0.
+- `end` (number, optional): End character position to return from the content, defaults to content length.
+
+**Auto-set Headers:**
+- `Accept`: Prioritizes markdown content types, falls back to HTML types if not provided
 - `User-Agent`: Set to browser-like string if not provided
 
 ## Installation

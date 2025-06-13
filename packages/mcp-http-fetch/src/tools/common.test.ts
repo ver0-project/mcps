@@ -1,6 +1,6 @@
 import {describe, expect, it, test} from 'vitest';
 import type {HttpFetchInput} from './common.js';
-import {inputToRequestOptions, trimString} from './common.js';
+import {inputToRequestOptions, trimString, isHtmlContentType} from './common.js';
 
 describe('common', () => {
 	describe('inputToRequestOptions', () => {
@@ -294,6 +294,47 @@ describe('common', () => {
 			},
 		])('should $name', ({input, start, end, expected}) => {
 			expect(trimString(input, start, end)).toBe(expected);
+		});
+	});
+
+	describe('isHtmlContentType', () => {
+		test.each([
+			// HTML content types that should return true
+			{contentType: 'text/html', expected: true, description: 'basic HTML content type'},
+			{contentType: 'text/html; charset=utf-8', expected: true, description: 'HTML with charset parameter'},
+			{contentType: 'TEXT/HTML', expected: true, description: 'HTML with uppercase'},
+			{contentType: 'application/xhtml+xml', expected: true, description: 'XHTML+XML content type'},
+			{contentType: 'application/xhtml+xml; charset=utf-8', expected: true, description: 'XHTML+XML with charset'},
+			{contentType: 'application/xhtml', expected: true, description: 'XHTML content type'},
+			{contentType: 'Text/Html', expected: true, description: 'HTML with mixed case'},
+			{contentType: 'APPLICATION/XHTML+XML', expected: true, description: 'XHTML+XML uppercase'},
+			{contentType: 'application/XHTML', expected: true, description: 'XHTML mixed case'},
+			{
+				contentType: 'text/html; charset=utf-8; boundary=something',
+				expected: true,
+				description: 'HTML with multiple parameters',
+			},
+			{
+				contentType: 'application/xhtml+xml; charset=iso-8859-1',
+				expected: true,
+				description: 'XHTML+XML with charset parameter',
+			},
+
+			// Non-HTML content types that should return false
+			{contentType: 'application/json', expected: false, description: 'JSON content type'},
+			{contentType: 'text/plain', expected: false, description: 'plain text content type'},
+			{contentType: 'text/css', expected: false, description: 'CSS content type'},
+			{contentType: 'application/javascript', expected: false, description: 'JavaScript content type'},
+			{contentType: 'text/xml', expected: false, description: 'XML content type'},
+			{contentType: 'application/xml', expected: false, description: 'application XML content type'},
+			{contentType: 'image/png', expected: false, description: 'PNG image content type'},
+			{contentType: 'application/pdf', expected: false, description: 'PDF content type'},
+
+			// Edge cases that should return false
+			{contentType: null, expected: false, description: 'null content type'},
+			{contentType: '', expected: false, description: 'empty string content type'},
+		])('should return $expected for $description', ({contentType, expected}) => {
+			expect(isHtmlContentType(contentType)).toBe(expected);
 		});
 	});
 });

@@ -3,7 +3,6 @@ description: 'APPLY when working with mcp-http-fetch package TO understand packa
 globs:
 alwaysApply: true
 ---
-
 # MCP HTTP Fetch Package Overview
 
 ## Package Context
@@ -22,6 +21,7 @@ alwaysApply: true
 - **MCP Server**: Built using `@modelcontextprotocol/sdk` for protocol compliance
 - **HTTP Fetching**: Uses native `fetch` API for HTTP operations
 - **HTML Minification**: Uses `@minify-html/node` for HTML optimization
+- **Markdown Conversion**: Uses `turndown` for HTML to markdown conversion
 - **Type Safety**: Implements Zod schemas for input validation
 - **Transport**: Uses stdio transport for communication with AI assistants
 
@@ -43,19 +43,17 @@ The package implements the following HTTP fetch operations as MCP tools:
 | Tool            | Status         | Description                                          |
 | --------------- | -------------- | ---------------------------------------------------- |
 | `fetch-html`    | ✅ Implemented | Fetch HTML content with optional minification and content limiting |
-| `fetch-text`    | 🚧 Planned     | Fetch plain text content                             |
-| `fetch-markdown`| 🚧 Planned     | Fetch and process Markdown content                   |
+| `fetch-markdown`| ✅ Implemented | Fetch HTML and convert to markdown with content limiting |
 | `fetch-json`    | 🚧 Planned     | Fetch and parse JSON content                         |
 
 ## Tool Implementation Pattern
 
 Each HTTP fetch tool follows a consistent pattern:
 
-- Extends `HttpFetchBase` class for common functionality
 - Implements Zod schema for parameter validation
 - Uses native `fetch` API for HTTP operations
 - Provides comprehensive error handling and response metadata
-- Includes content-specific processing (e.g., HTML minification)
+- Includes content-specific processing (e.g., HTML minification, markdown conversion)
 
 ## fetch-html Tool Features
 
@@ -65,6 +63,7 @@ Each HTTP fetch tool follows a consistent pattern:
 
 ### HTML Minification
 - **Library**: `@minify-html/node` for fast, efficient minification
+- **Condition**: Only applied when response content-type indicates HTML (text/html, application/xhtml+xml, application/xhtml)
 - **Configuration**: Preserves template syntax, minifies CSS/JS, keeps compatibility
 - **Metadata**: Reports original/minified lengths and compression ratio
 - **Error Handling**: Falls back to original HTML if minification fails
@@ -78,6 +77,29 @@ Each HTTP fetch tool follows a consistent pattern:
 ### Response Structure
 - **Metadata**: Status, headers, URL, redirect info, minification stats, content limiting info
 - **Content**: HTML (minified or original based on request, limited by start/end if specified)
+
+## fetch-markdown Tool Features
+
+### Automatic Headers
+- **Accept**: Prioritizes markdown content types (`text/markdown`, `text/x-markdown`, `application/markdown`) then falls back to HTML types
+- **User-Agent**: Set to browser-like string if not provided
+
+### Markdown Conversion
+- **Library**: `turndown` for high-quality HTML to markdown conversion
+- **Global Instance**: Uses a shared, pre-configured TurndownService instance for optimal performance
+- **Configuration**: ATX-style headings, fenced code blocks, proper formatting for emphasis and links
+- **Custom Rules**: Enhanced support for strikethrough (`~~text~~`) and table formatting
+- **Condition**: Only applied when response content-type indicates HTML content
+- **Error Handling**: Falls back to original content if conversion fails
+
+### Content Limiting
+- **Start/End**: Same trimming functionality as fetch-html tool for token efficiency
+- **Metadata**: Reports original content length, markdown conversion length, and applied trimming
+- **Token Optimization**: Particularly useful for large HTML documents converted to markdown
+
+### Response Structure
+- **Metadata**: Status, headers, URL, redirect info, markdown conversion stats, content limiting info
+- **Content**: Markdown (converted from HTML when applicable, limited by start/end if specified)
 
 ## Development Guidelines
 
@@ -95,11 +117,13 @@ Each HTTP fetch tool follows a consistent pattern:
 
 - `@modelcontextprotocol/sdk`: MCP protocol implementation
 - `@minify-html/node`: Fast HTML minification
+- `turndown`: HTML to markdown conversion
 - `zod`: Schema validation
 
 ### Development Dependencies
 
 - `@types/node`: Node.js type definitions
+- `@types/turndown`: TypeScript definitions for turndown
 - `typescript`: TypeScript compiler
 - `vitest`: Testing framework
 - `eslint`: Code linting
