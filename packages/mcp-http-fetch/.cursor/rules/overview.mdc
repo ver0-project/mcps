@@ -44,62 +44,62 @@ The package implements the following HTTP fetch operations as MCP tools:
 | --------------- | -------------- | ---------------------------------------------------- |
 | `fetch-html`    | ✅ Implemented | Fetch HTML content with optional minification and content limiting |
 | `fetch-markdown`| ✅ Implemented | Fetch HTML and convert to markdown with content limiting |
-| `fetch-json`    | 🚧 Planned     | Fetch and parse JSON content                         |
+| `fetch-json`    | ✅ Implemented | Fetch and return the raw response body as text (no JSON parsing) |
 
-## Tool Implementation Pattern
+## Input Parameters (All Tools)
 
-Each HTTP fetch tool follows a consistent pattern:
+All tools share the following input parameters (unless otherwise noted):
 
-- Implements Zod schema for parameter validation
-- Uses native `fetch` API for HTTP operations
-- Provides comprehensive error handling and response metadata
-- Includes content-specific processing (e.g., HTML minification, markdown conversion)
+- `uri` (string): The target URI to fetch (required)
+- `method` (string): HTTP method to use (default: GET)
+- `headers` (object): HTTP headers to include in the request (optional)
+- `body` (string | object): Request body for POST/PUT requests (optional; object will be JSON-stringified)
+- `followRedirects` (boolean): Whether to follow redirects (default: true)
+- `credentials` (string): Credentials policy (`omit`, `same-origin`, `include`; default: `same-origin`)
+- `cache` (string): Cache mode (`default`, `no-store`, `reload`, `no-cache`, `force-cache`; optional)
+- `mode` (string): CORS mode (`cors`, `no-cors`, `same-origin`; default: `cors`)
+- `referrer` (string): Request referrer URL (optional)
+- `referrerPolicy` (string): Referrer policy (default: `strict-origin-when-cross-origin`)
 
-## fetch-html Tool Features
+### Additional Inputs
 
-### Automatic Headers
-- **Accept**: Set to HTML types if not provided
-- **User-Agent**: Set to browser-like string if not provided
+- `fetch-html`:
+  - `minify` (boolean): Whether to minify the HTML response (default: false; only for HTML content)
+  - `start` (number): Start character position to return from the HTML content (default: 0)
+  - `end` (number): End character position to return from the HTML content (default: content length)
+- `fetch-markdown`:
+  - `start` (number): Start character position to return from the markdown content (default: 0)
+  - `end` (number): End character position to return from the markdown content (default: content length)
 
-### HTML Minification
-- **Library**: `@minify-html/node` for fast, efficient minification
-- **Condition**: Only applied when response content-type indicates HTML (text/html, application/xhtml+xml, application/xhtml)
-- **Configuration**: Preserves template syntax, minifies CSS/JS, keeps compatibility
-- **Metadata**: Reports original/minified lengths and compression ratio
-- **Error Handling**: Falls back to original HTML if minification fails
+## Response Structure (All Tools)
 
-### Content Limiting
-- **Offset**: Skip specified number of characters from the beginning of HTML content
-- **Limit**: Return only specified maximum number of characters from HTML content
-- **Metadata**: Reports original content length, offset applied, and final content length
-- **Token Efficiency**: Helps manage large HTML documents by limiting returned content
+Each tool returns a response with:
+- `content`: Array of objects, each with `{ type: 'text', text: string }`
+  - The first item is always a JSON string with response metadata (status, headers, URL, etc.)
+  - The second item is the main response body (HTML, markdown, or raw text)
+  - Additional items may include error or info messages
 
-### Response Structure
-- **Metadata**: Status, headers, URL, redirect info, minification stats, content limiting info
-- **Content**: HTML (minified or original based on request, limited by start/end if specified)
+## Tool Features
 
-## fetch-markdown Tool Features
+### fetch-html Tool Features
+- Automatic browser-like headers (`Accept`, `User-Agent`) if not provided
+- HTML minification using `@minify-html/node` (only for HTML content types)
+- Content limiting via `start` and `end` (useful for large documents)
+- Error handling: If minification fails, returns original HTML with an error message; if content type is not HTML, minification is skipped with a note
 
-### Automatic Headers
-- **Accept**: Prioritizes markdown content types (`text/markdown`, `text/x-markdown`, `application/markdown`) then falls back to HTML types
-- **User-Agent**: Set to browser-like string if not provided
+### fetch-markdown Tool Features
+- Automatic markdown-prioritized headers (`Accept: text/markdown, text/x-markdown, application/markdown`, then HTML types)
+- High-quality HTML to markdown conversion using `turndown` with:
+  - ATX-style headings, fenced code blocks, proper formatting
+  - Enhanced support for strikethrough (`~~text~~`) and tables
+  - Removes `<head>`, `<script>`, and `<style>` tags
+- Content limiting via `start` and `end`
+- Error handling: If conversion fails, returns original content with an error message; if content type is not HTML, conversion is skipped with a note
 
-### Markdown Conversion
-- **Library**: `turndown` for high-quality HTML to markdown conversion
-- **Global Instance**: Uses a shared, pre-configured TurndownService instance for optimal performance
-- **Configuration**: ATX-style headings, fenced code blocks, proper formatting for emphasis and links
-- **Custom Rules**: Enhanced support for strikethrough (`~~text~~`) and table formatting
-- **Condition**: Only applied when response content-type indicates HTML content
-- **Error Handling**: Falls back to original content if conversion fails
-
-### Content Limiting
-- **Start/End**: Same trimming functionality as fetch-html tool for token efficiency
-- **Metadata**: Reports original content length, markdown conversion length, and applied trimming
-- **Token Optimization**: Particularly useful for large HTML documents converted to markdown
-
-### Response Structure
-- **Metadata**: Status, headers, URL, redirect info, markdown conversion stats, content limiting info
-- **Content**: Markdown (converted from HTML when applicable, limited by start/end if specified)
+### fetch-json Tool Features
+- `Accept` header prefers JSON content types but will accept any response
+- Returns the raw response body as text (no JSON parsing or validation)
+- Error handling: Always returns text, even if the response is not valid JSON
 
 ## Development Guidelines
 
