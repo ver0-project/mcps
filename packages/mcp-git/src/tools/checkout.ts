@@ -33,10 +33,6 @@ export const GIT_CHECKOUT_INPUT_SCHEMA = {
  * Provides git checkout functionality for MCP
  */
 export class GitCheckoutTool {
-	get name() {
-		return 'checkout';
-	}
-
 	readonly config: ToolConfig<typeof GIT_CHECKOUT_INPUT_SCHEMA, never> = {
 		description: 'Switch branches, commits, or restore working tree files.',
 		inputSchema: GIT_CHECKOUT_INPUT_SCHEMA,
@@ -45,6 +41,10 @@ export class GitCheckoutTool {
 			readOnlyHint: false,
 		},
 	};
+
+	get name() {
+		return 'checkout';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

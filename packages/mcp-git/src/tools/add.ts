@@ -14,10 +14,6 @@ export const GIT_ADD_INPUT_SCHEMA = {
  * Provides git add functionality for MCP
  */
 export class GitAddTool {
-	get name() {
-		return 'add';
-	}
-
 	readonly config: ToolConfig<typeof GIT_ADD_INPUT_SCHEMA, never> = {
 		description: 'Add files to the git staging area.',
 		inputSchema: GIT_ADD_INPUT_SCHEMA,
@@ -26,6 +22,10 @@ export class GitAddTool {
 			readOnlyHint: false,
 		},
 	};
+
+	get name() {
+		return 'add';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

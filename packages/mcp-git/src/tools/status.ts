@@ -48,10 +48,6 @@ export const GIT_STATUS_INPUT_SCHEMA = {
  * Provides git status functionality for MCP
  */
 export class GitStatusTool {
-	get name() {
-		return 'status';
-	}
-
 	readonly config: ToolConfig<typeof GIT_STATUS_INPUT_SCHEMA, never> = {
 		description: 'Get the current git repository status.',
 		inputSchema: GIT_STATUS_INPUT_SCHEMA,
@@ -60,6 +56,10 @@ export class GitStatusTool {
 			readOnlyHint: true,
 		},
 	};
+
+	get name() {
+		return 'status';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

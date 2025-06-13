@@ -41,10 +41,6 @@ export const GIT_COMMIT_INPUT_SCHEMA = {
  * Provides git commit functionality for MCP
  */
 export class GitCommitTool {
-	get name() {
-		return 'commit';
-	}
-
 	readonly config: ToolConfig<typeof GIT_COMMIT_INPUT_SCHEMA, never> = {
 		description: 'Commit staged changes to the git repository.',
 		inputSchema: GIT_COMMIT_INPUT_SCHEMA,
@@ -53,6 +49,10 @@ export class GitCommitTool {
 			readOnlyHint: false,
 		},
 	};
+
+	get name() {
+		return 'commit';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

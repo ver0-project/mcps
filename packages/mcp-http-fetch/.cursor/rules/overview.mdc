@@ -1,0 +1,118 @@
+---
+description: 'APPLY when working with mcp-http-fetch package TO understand package structure, architecture, available tools, and development guidelines'
+globs:
+alwaysApply: true
+---
+
+# MCP HTTP Fetch Package Overview
+
+## Package Context
+
+- **Name**: `@ver0/mcp-http-fetch`
+- **Purpose**: MCP (Model Context Protocol) server that provides HTTP fetching capabilities as tools for AI assistants and applications
+- **Repository**: Part of the `@ver0-project/mcps` monorepo
+- **Entry Point**: `src/index.ts` - main MCP server setup
+- **Build Target**: `dist/index.js` - compiled JavaScript output
+- **Node Version**: Requires Node.js >= 22
+
+## Architecture Overview
+
+### Core Components
+
+- **MCP Server**: Built using `@modelcontextprotocol/sdk` for protocol compliance
+- **HTTP Fetching**: Uses native `fetch` API for HTTP operations
+- **HTML Minification**: Uses `@minify-html/node` for HTML optimization
+- **Type Safety**: Implements Zod schemas for input validation
+- **Transport**: Uses stdio transport for communication with AI assistants
+
+### Directory Structure
+
+```
+packages/mcp-http-fetch/
+├── src/
+│   ├── index.ts          # Main server entry point and tool registration
+│   ├── types.ts          # Shared type definitions
+│   └── tools/            # Individual HTTP fetch tool implementations
+└── package.json          # Package configuration
+```
+
+## Available HTTP Fetch Tools
+
+The package implements the following HTTP fetch operations as MCP tools:
+
+| Tool            | Status         | Description                                          |
+| --------------- | -------------- | ---------------------------------------------------- |
+| `fetch-html`    | ✅ Implemented | Fetch HTML content with optional minification and content limiting |
+| `fetch-text`    | 🚧 Planned     | Fetch plain text content                             |
+| `fetch-markdown`| 🚧 Planned     | Fetch and process Markdown content                   |
+| `fetch-json`    | 🚧 Planned     | Fetch and parse JSON content                         |
+
+## Tool Implementation Pattern
+
+Each HTTP fetch tool follows a consistent pattern:
+
+- Extends `HttpFetchBase` class for common functionality
+- Implements Zod schema for parameter validation
+- Uses native `fetch` API for HTTP operations
+- Provides comprehensive error handling and response metadata
+- Includes content-specific processing (e.g., HTML minification)
+
+## fetch-html Tool Features
+
+### Automatic Headers
+- **Accept**: Set to HTML types if not provided
+- **User-Agent**: Set to browser-like string if not provided
+
+### HTML Minification
+- **Library**: `@minify-html/node` for fast, efficient minification
+- **Configuration**: Preserves template syntax, minifies CSS/JS, keeps compatibility
+- **Metadata**: Reports original/minified lengths and compression ratio
+- **Error Handling**: Falls back to original HTML if minification fails
+
+### Content Limiting
+- **Offset**: Skip specified number of characters from the beginning of HTML content
+- **Limit**: Return only specified maximum number of characters from HTML content
+- **Metadata**: Reports original content length, offset applied, and final content length
+- **Token Efficiency**: Helps manage large HTML documents by limiting returned content
+
+### Response Structure
+- **Metadata**: Status, headers, URL, redirect info, minification stats, content limiting info
+- **Content**: HTML (minified or original based on request, limited by start/end if specified)
+
+## Development Guidelines
+
+- **Testing**: Each tool must have corresponding `.test.ts` file with comprehensive coverage
+- **Validation**: Use Zod schemas for all tool parameters
+- **Error Handling**: Provide meaningful error messages for HTTP operation failures
+- **Types**: Maintain type safety throughout the codebase
+- **Documentation**: Document all tool parameters and return values
+- **Package management**: Use `yarn` for package management
+- **Security**: Be cautious with external URLs and content processing
+
+## Dependencies
+
+### Runtime Dependencies
+
+- `@modelcontextprotocol/sdk`: MCP protocol implementation
+- `@minify-html/node`: Fast HTML minification
+- `zod`: Schema validation
+
+### Development Dependencies
+
+- `@types/node`: Node.js type definitions
+- `typescript`: TypeScript compiler
+- `vitest`: Testing framework
+- `eslint`: Code linting
+
+## Usage Context
+
+This package is designed to be used as an MCP server that AI assistants can connect to for performing HTTP fetch operations. It provides a structured, validated interface for fetching and processing web content while maintaining type safety, proper error handling, and token efficiency through content optimization.
+
+## Security Considerations
+
+- Makes HTTP requests to external URLs
+- No built-in authentication or authorization
+- Consider network policies and firewall rules
+- Be cautious with untrusted URLs and content
+- Content processing (minification) is performed locally
+

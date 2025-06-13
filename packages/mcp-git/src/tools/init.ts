@@ -16,10 +16,6 @@ export const GIT_INIT_INPUT_SCHEMA = {
  * Provides git init functionality for MCP
  */
 export class GitInitTool {
-	get name() {
-		return 'init';
-	}
-
 	readonly config: ToolConfig<typeof GIT_INIT_INPUT_SCHEMA, never> = {
 		description: 'Initialize new Git repository.',
 		inputSchema: GIT_INIT_INPUT_SCHEMA,
@@ -28,6 +24,10 @@ export class GitInitTool {
 			readOnlyHint: false,
 		},
 	};
+
+	get name() {
+		return 'init';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

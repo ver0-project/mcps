@@ -1,15 +1,15 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
 import {GitAddTool} from './tools/add.js';
-import {GitStatusTool} from './tools/status.js';
-import {GitCommitTool} from './tools/commit.js';
-import {GitLogTool} from './tools/log.js';
-import {GitCreateBranchTool} from './tools/create-branch.js';
 import {GitCheckoutTool} from './tools/checkout.js';
-import {GitResetTool} from './tools/reset.js';
+import {GitCommitTool} from './tools/commit.js';
+import {GitCreateBranchTool} from './tools/create-branch.js';
 import {GitDiffTool} from './tools/diff.js';
-import {GitShowTool} from './tools/show.js';
 import {GitInitTool} from './tools/init.js';
+import {GitLogTool} from './tools/log.js';
+import {GitResetTool} from './tools/reset.js';
+import {GitShowTool} from './tools/show.js';
+import {GitStatusTool} from './tools/status.js';
 
 const server = new McpServer({
 	name: 'mcp-git',
