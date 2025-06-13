@@ -1,4 +1,4 @@
-# @ver0-project/mcp-git
+# @ver0/mcp-git
 
 ## 0.1.0
 
