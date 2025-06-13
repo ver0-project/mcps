@@ -38,7 +38,7 @@
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.12.1",
 		"simple-git": "^3.28.0",
-		"zod": "^3.25.61"
+		"zod": "^3.25.63"
 	},
 	"devDependencies": {
 		"@types/node": "^24.0.1",
