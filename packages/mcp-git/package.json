@@ -1,5 +1,5 @@
 {
-	"name": "@ver0-project/mcp-git",
+	"name": "@ver0/mcp-git",
 	"version": "0.1.0",
 	"description": "MCP tools for Git operations",
 	"keywords": [

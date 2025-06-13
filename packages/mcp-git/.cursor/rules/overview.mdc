@@ -1,7 +1,7 @@
 ---
 description: 'APPLY when working with mcp-git package TO understand package structure, architecture, available tools,
 and development guidelines'
-globs: 
+globs:
 
 ---
 
@@ -9,7 +9,7 @@ globs:
 
 ## Package Context
 
-- **Name**: `@ver0-project/mcp-git`
+- **Name**: `@ver0/mcp-git`
 - **Purpose**: MCP (Model Context Protocol) server that provides Git operations as tools for AI assistants and
   applications
 - **Repository**: Part of the `@ver0-project/mcps` monorepo

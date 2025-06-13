@@ -189,7 +189,7 @@ Initializes a new Git repository.
   "mcpServers": {
     "git": {
       "command": "npx",
-      "args": ["-y", "@ver0-project/mcp-git"]
+      "args": ["-y", "@ver0/mcp-git"]
     }
   }
 }
