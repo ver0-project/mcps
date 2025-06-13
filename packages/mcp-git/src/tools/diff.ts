@@ -20,10 +20,6 @@ export const GIT_DIFF_INPUT_SCHEMA = {
  * Provides git diff functionality for MCP
  */
 export class GitDiffTool {
-	get name() {
-		return 'diff';
-	}
-
 	readonly config: ToolConfig<typeof GIT_DIFF_INPUT_SCHEMA, never> = {
 		description: 'Show differences between commits, branches, files.',
 		inputSchema: GIT_DIFF_INPUT_SCHEMA,
@@ -32,6 +28,10 @@ export class GitDiffTool {
 			readOnlyHint: true,
 		},
 	};
+
+	get name() {
+		return 'diff';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

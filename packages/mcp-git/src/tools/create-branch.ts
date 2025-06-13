@@ -24,10 +24,6 @@ export const GIT_CREATE_BRANCH_INPUT_SCHEMA = {
  * Provides git branch creation functionality for MCP
  */
 export class GitCreateBranchTool {
-	get name() {
-		return 'create-branch';
-	}
-
 	readonly config: ToolConfig<typeof GIT_CREATE_BRANCH_INPUT_SCHEMA, never> = {
 		description: 'Create a new git branch, optionally from a specific starting point.',
 		inputSchema: GIT_CREATE_BRANCH_INPUT_SCHEMA,
@@ -36,6 +32,10 @@ export class GitCreateBranchTool {
 			readOnlyHint: false,
 		},
 	};
+
+	get name() {
+		return 'create-branch';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

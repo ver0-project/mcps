@@ -55,10 +55,6 @@ export const GIT_LOG_INPUT_SCHEMA = {
  * Provides git log functionality for MCP
  */
 export class GitLogTool {
-	get name() {
-		return 'log';
-	}
-
 	readonly config: ToolConfig<typeof GIT_LOG_INPUT_SCHEMA, never> = {
 		description: 'View commit history and log information from a git repository.',
 		inputSchema: GIT_LOG_INPUT_SCHEMA,
@@ -67,6 +63,10 @@ export class GitLogTool {
 			readOnlyHint: true,
 		},
 	};
+
+	get name() {
+		return 'log';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

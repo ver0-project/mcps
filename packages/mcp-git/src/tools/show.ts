@@ -22,10 +22,6 @@ export const GIT_SHOW_INPUT_SCHEMA = {
  * Provides git show functionality for MCP
  */
 export class GitShowTool {
-	get name() {
-		return 'show';
-	}
-
 	readonly config: ToolConfig<typeof GIT_SHOW_INPUT_SCHEMA, never> = {
 		description: 'Display commit details and changes.',
 		inputSchema: GIT_SHOW_INPUT_SCHEMA,
@@ -34,6 +30,10 @@ export class GitShowTool {
 			readOnlyHint: true,
 		},
 	};
+
+	get name() {
+		return 'show';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);

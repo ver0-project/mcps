@@ -24,10 +24,6 @@ export const GIT_RESET_INPUT_SCHEMA = {
  * Provides git reset functionality for MCP
  */
 export class GitResetTool {
-	get name() {
-		return 'reset';
-	}
-
 	readonly config: ToolConfig<typeof GIT_RESET_INPUT_SCHEMA, never> = {
 		description: 'Reset repository state (soft, mixed, hard).',
 		inputSchema: GIT_RESET_INPUT_SCHEMA,
@@ -36,6 +32,10 @@ export class GitResetTool {
 			readOnlyHint: false,
 		},
 	};
+
+	get name() {
+		return 'reset';
+	}
 
 	register(srv: McpServer) {
 		srv.registerTool(this.name, this.config, this.#handle);
