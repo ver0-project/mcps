@@ -1,6 +1,6 @@
 {
 	"name": "@ver0/mcp-http-fetch",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"private": true,
 	"description": "MCP tools for HTTP fetch operations",
 	"keywords": [
