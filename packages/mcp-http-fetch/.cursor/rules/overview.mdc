@@ -3,140 +3,49 @@ description: 'APPLY when working with mcp-http-fetch package TO understand packa
 globs:
 alwaysApply: true
 ---
-# MCP HTTP Fetch Package Overview
+# @ver0/mcp-http-fetch – Overview Rule
 
-## Package Context
+## Context
 
-- **Name**: `@ver0/mcp-http-fetch`
-- **Purpose**: MCP (Model Context Protocol) server that provides HTTP fetching capabilities as tools for AI assistants and applications
-- **Repository**: Part of the `@ver0-project/mcps` monorepo
-- **Entry Point**: `src/index.ts` - main MCP server setup
-- **Build Target**: `dist/index.js` - compiled JavaScript output
-- **Node Version**: Requires Node.js >= 22
+- This rule is injected whenever files under `packages/mcp-http-fetch` are referenced.
+- It gives the AI a quick mental model of the package so it can navigate and edit confidently.
+- Use it for orientation; it is not exhaustive documentation.
 
-## Architecture Overview
+## Core Idea
 
-### Core Components
+`@ver0/mcp-http-fetch` is an **MCP (Model Context Protocol)** server exposing HTTP fetch operations as tools over **stdio**. It provides content-optimized fetching with **HTML minification**, **markdown conversion**, and **content limiting** for efficient AI processing.
 
-- **MCP Server**: Built using `@modelcontextprotocol/sdk` for protocol compliance
-- **HTTP Fetching**: Uses native `fetch` API for HTTP operations
-- **HTML Minification**: Uses `@minify-html/node` for HTML optimization
-- **Markdown Conversion**: Uses `turndown` for HTML to markdown conversion
-- **Type Safety**: Implements Zod schemas for input validation
-- **Transport**: Uses stdio transport for communication with AI assistants
+## Key Directories
 
-### Directory Structure
-
-```
-packages/mcp-http-fetch/
-├── src/
-│   ├── index.ts          # Main server entry point and tool registration
-│   ├── types.ts          # Shared type definitions
-│   └── tools/            # Individual HTTP fetch tool implementations
-└── package.json          # Package configuration
+```text
+src/
+  index.ts      // Server bootstrap + tool registration
+  types.ts      // Shared type definitions
+  tools/        // One file per HTTP tool (fetch-html-tool.ts, fetch-markdown-tool.ts, ...)
 ```
 
-## Available HTTP Fetch Tools
+## Implemented Tools
 
-The package implements the following HTTP fetch operations as MCP tools:
+fetch-html · fetch-markdown · fetch-json
 
-| Tool            | Status         | Description                                          |
-| --------------- | -------------- | ---------------------------------------------------- |
-| `fetch-html`    | ✅ Implemented | Fetch HTML content with optional minification and content limiting |
-| `fetch-markdown`| ✅ Implemented | Fetch HTML and convert to markdown with content limiting |
-| `fetch-json`    | ✅ Implemented | Fetch and return the raw response body as text (no JSON parsing) |
-
-## Input Parameters (All Tools)
-
-All tools share the following input parameters (unless otherwise noted):
-
-- `uri` (string): The target URI to fetch (required)
-- `method` (string): HTTP method to use (default: GET)
-- `headers` (object): HTTP headers to include in the request (optional)
-- `body` (string | object): Request body for POST/PUT requests (optional; object will be JSON-stringified)
-- `followRedirects` (boolean): Whether to follow redirects (default: true)
-- `credentials` (string): Credentials policy (`omit`, `same-origin`, `include`; default: `same-origin`)
-- `cache` (string): Cache mode (`default`, `no-store`, `reload`, `no-cache`, `force-cache`; optional)
-- `mode` (string): CORS mode (`cors`, `no-cors`, `same-origin`; default: `cors`)
-- `referrer` (string): Request referrer URL (optional)
-- `referrerPolicy` (string): Referrer policy (default: `strict-origin-when-cross-origin`)
-
-### Additional Inputs
-
-- `fetch-html`:
-  - `minify` (boolean): Whether to minify the HTML response (default: false; only for HTML content)
-  - `start` (number): Start character position to return from the HTML content (default: 0)
-  - `end` (number): End character position to return from the HTML content (default: content length)
-- `fetch-markdown`:
-  - `start` (number): Start character position to return from the markdown content (default: 0)
-  - `end` (number): End character position to return from the markdown content (default: content length)
-
-## Response Structure (All Tools)
-
-Each tool returns a response with:
-- `content`: Array of objects, each with `{ type: 'text', text: string }`
-  - The first item is always a JSON string with response metadata (status, headers, URL, etc.)
-  - The second item is the main response body (HTML, markdown, or raw text)
-  - Additional items may include error or info messages
-
-## Tool Features
-
-### fetch-html Tool Features
-- Automatic browser-like headers (`Accept`, `User-Agent`) if not provided
-- HTML minification using `@minify-html/node` (only for HTML content types)
-- Content limiting via `start` and `end` (useful for large documents)
-- Error handling: If minification fails, returns original HTML with an error message; if content type is not HTML, minification is skipped with a note
-
-### fetch-markdown Tool Features
-- Automatic markdown-prioritized headers (`Accept: text/markdown, text/x-markdown, application/markdown`, then HTML types)
-- High-quality HTML to markdown conversion using `turndown` with:
-  - ATX-style headings, fenced code blocks, proper formatting
-  - Enhanced support for strikethrough (`~~text~~`) and tables
-  - Removes `<head>`, `<script>`, and `<style>` tags
-- Content limiting via `start` and `end`
-- Error handling: If conversion fails, returns original content with an error message; if content type is not HTML, conversion is skipped with a note
-
-### fetch-json Tool Features
-- `Accept` header prefers JSON content types but will accept any response
-- Returns the raw response body as text (no JSON parsing or validation)
-- Error handling: Always returns text, even if the response is not valid JSON
+Each tool follows the same pattern:
+1. Declare an `inputSchema` with Zod.
+2. Execute HTTP fetch with native `fetch` API.
+3. Process content (minify HTML, convert to markdown, etc.).
+4. Return structured response with metadata + content.
+5. Include comprehensive error handling.
 
 ## Development Guidelines
 
-- **Testing**: Each tool must have corresponding `.test.ts` file with comprehensive coverage
-- **Validation**: Use Zod schemas for all tool parameters
-- **Error Handling**: Provide meaningful error messages for HTTP operation failures
-- **Types**: Maintain type safety throughout the codebase
-- **Documentation**: Document all tool parameters and return values
-- **Package management**: Use `yarn` for package management
-- **Security**: Be cautious with external URLs and content processing
+- Keep changes minimal & *pure-function* oriented.
+- Validate **all** inputs with Zod schemas.
+- Throw clear, actionable errors.
+- Process content efficiently for AI consumption.
+- Respect project-wide code quality & comment standards.
 
-## Dependencies
+## Gotchas
 
-### Runtime Dependencies
-
-- `@modelcontextprotocol/sdk`: MCP protocol implementation
-- `@minify-html/node`: Fast HTML minification
-- `turndown`: HTML to markdown conversion
-- `zod`: Schema validation
-
-### Development Dependencies
-
-- `@types/node`: Node.js type definitions
-- `@types/turndown`: TypeScript definitions for turndown
-- `typescript`: TypeScript compiler
-- `vitest`: Testing framework
-- `eslint`: Code linting
-
-## Usage Context
-
-This package is designed to be used as an MCP server that AI assistants can connect to for performing HTTP fetch operations. It provides a structured, validated interface for fetching and processing web content while maintaining type safety, proper error handling, and token efficiency through content optimization.
-
-## Security Considerations
-
-- Makes HTTP requests to external URLs
-- No built-in authentication or authorization
-- Consider network policies and firewall rules
-- Be cautious with untrusted URLs and content
-- Content processing (minification) is performed locally
+- All tools return metadata as first content item (JSON string).
+- Content processing (minification/conversion) may fail gracefully.
+- `start`/`end` parameters work on final processed content.
 
