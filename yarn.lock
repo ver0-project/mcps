@@ -963,9 +963,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@modelcontextprotocol/sdk@npm:^1.12.1, @modelcontextprotocol/sdk@npm:^1.12.2":
-  version: 1.12.2
-  resolution: "@modelcontextprotocol/sdk@npm:1.12.2"
+"@modelcontextprotocol/sdk@npm:^1.12.3":
+  version: 1.12.3
+  resolution: "@modelcontextprotocol/sdk@npm:1.12.3"
   dependencies:
     ajv: "npm:^6.12.6"
     content-type: "npm:^1.0.5"
@@ -978,7 +978,7 @@ __metadata:
     raw-body: "npm:^3.0.0"
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.24.1"
-  checksum: 10c0/c2d7bf3f8cad50187ca52a4b66f728008d56e3c8fd406fc1df6b07dd87ff0c9d9d1766edb40236d8a65f0d1779e515408846e6ea0589c03e11c78a52ef336f07
+  checksum: 10c0/8bc0b91e596ec886efc64d68ae8474247647405f1a5ae407e02439c74c2a03528b3fbdce8f9352d9c2df54aa4548411e1aa1816ab3b09e045c2ff4202e2fd374
   languageName: node
   linkType: hard
 
@@ -1494,7 +1494,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@ver0/mcp-git@workspace:packages/mcp-git"
   dependencies:
-    "@modelcontextprotocol/sdk": "npm:^1.12.2"
+    "@modelcontextprotocol/sdk": "npm:^1.12.3"
     "@types/node": "npm:^24.0.1"
     "@ver0/eslint-config": "npm:^1.2.2"
     "@ver0/eslint-formatter-gha": "npm:^1.0.1"
@@ -1515,7 +1515,7 @@ __metadata:
   resolution: "@ver0/mcp-http-fetch@workspace:packages/mcp-http-fetch"
   dependencies:
     "@minify-html/node": "npm:^0.16.4"
-    "@modelcontextprotocol/sdk": "npm:^1.12.1"
+    "@modelcontextprotocol/sdk": "npm:^1.12.3"
     "@types/node": "npm:^24.0.1"
     "@types/turndown": "npm:^5.0.5"
     "@ver0/eslint-config": "npm:^1.2.2"
