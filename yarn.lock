@@ -1497,6 +1497,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ver0/mcp-filesystem@workspace:packages/mcp-filesystem":
+  version: 0.0.0-use.local
+  resolution: "@ver0/mcp-filesystem@workspace:packages/mcp-filesystem"
+  dependencies:
+    "@minify-html/node": "npm:^0.16.4"
+    "@modelcontextprotocol/sdk": "npm:^1.12.3"
+    "@types/node": "npm:^24.0.3"
+    "@types/turndown": "npm:^5.0.5"
+    "@ver0/eslint-config": "npm:^1.2.2"
+    "@ver0/eslint-formatter-gha": "npm:^1.0.1"
+    "@vitest/coverage-v8": "npm:^3.2.3"
+    eslint: "npm:^9.29.0"
+    rimraf: "npm:^6.0.1"
+    turndown: "npm:^7.2.0"
+    typescript: "npm:^5.8.3"
+    vitest: "npm:^3.2.3"
+    zod: "npm:^3.23.8"
+  bin:
+    mcp-filesystem: dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "@ver0/mcp-git@workspace:packages/mcp-git":
   version: 0.0.0-use.local
   resolution: "@ver0/mcp-git@workspace:packages/mcp-git"

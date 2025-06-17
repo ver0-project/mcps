@@ -16,6 +16,10 @@ This monorepo contains Model Context Protocol (MCP) servers and developer tools 
 
   Server for HTTP fetching, enabling AI and automation tools to fetch data from the web.
 
+- **[`@ver0/mcp-filesystem`](./packages/mcp-filesystem/README.md)**
+
+  Server for filesystem operations, enabling AI and automation tools to read, write and search files on the filesystem.
+
 ---
 
 ## Contributing

@@ -1,0 +1,50 @@
+---
+description: 'APPLY when working with mcp-filesystem package TO understand package structure, architecture, available tools, and development guidelines'
+globs:
+alwaysApply: true
+---
+# @ver0/mcp-filesystem – Overview Rule
+
+## Context
+
+- This rule is injected whenever files under `packages/mcp-filesystem` are referenced.
+- It gives the AI a quick mental model of the package so it can navigate and edit confidently.
+- Use it for orientation; it is not exhaustive documentation.
+
+## Core Idea
+
+`@ver0/mcp-filesystem` is an **MCP (Model Context Protocol)** server exposing filesystem operations as tools over **stdio**. It provides comprehensive file and directory management capabilities with **security controls** and **type-safety** using **Zod**.
+
+## Key Directories
+
+```text
+src/
+  index.ts      // Server bootstrap + tool registration
+  types.ts      // Shared type definitions
+  tools/        // One file per filesystem tool (read.ts, write.ts, ...)
+```
+
+## Planned Tools
+
+read · read-many · write · write-many · list-directory · stat · find · grep · mkdir · diff-file · move · copy
+
+Each tool follows the same pattern:
+1. Declare an `inputSchema` with Zod.
+2. Execute filesystem operations with proper security validation.
+3. Return structured JSON ready for AI consumption.
+4. Include comprehensive error handling.
+5. Include dedicated unit tests.
+
+## Development Guidelines
+
+- Keep changes minimal & *pure-function* oriented.
+- Validate **all** inputs and paths for security.
+- Throw clear, actionable errors.
+- Implement proper access controls and sanitization.
+- Respect project-wide code quality & comment standards.
+
+## Security Considerations
+
+- Path validation to prevent directory traversal attacks.
+- Resource limits to prevent abuse.
+- Proper error handling without exposing sensitive information.
