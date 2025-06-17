@@ -11,3 +11,44 @@ alwaysApply: true
 - It gives the AI a quick mental model of the package so it can navigate and edit confidently.
 - Use it for orientation; it is not exhaustive documentation.
 
+## Core Idea
+
+`@ver0/mcp-filesystem` is an **MCP (Model Context Protocol)** server exposing filesystem operations as tools over **stdio**. It provides **safe filesystem access** with comprehensive **file and directory management**, **search capabilities**, and **batch operations** for efficient AI-driven file system interactions.
+
+## Key Directories
+
+```text
+src/
+  index.ts      // Server bootstrap + tool registration
+  types.ts      // Shared type definitions + FilesystemError class
+  utils/        // Utility functions (stat.ts for path statistics)
+  tools/        // One file per filesystem tool (planned: read.ts, write.ts, ...)
+```
+
+## Planned Tools
+
+stats · read · read-many · write · write-many · list-directory · grep · find · mkdir · diff-file · move · copy
+
+Each tool will follow the same pattern:
+1. Declare an `inputSchema` with Zod.
+2. Execute filesystem operations via Node.js `fs/promises`.
+3. Return structured JSON ready for AI consumption.
+4. Include comprehensive error handling with `FilesystemError`.
+5. Include dedicated unit tests with memfs.
+
+## Development Guidelines
+
+- Keep changes minimal & *pure-function* oriented.
+- Validate **all** inputs with Zod schemas.
+- Throw clear, actionable errors (`FilesystemError`).
+- Use memfs for comprehensive unit testing.
+- Respect project-wide code quality & comment standards.
+- Implement proper path validation and sanitization.
+
+## Gotchas
+
+- All paths should be validated and sanitized for security.
+- Use memfs for testing to avoid real filesystem side effects.
+- File operations should handle encoding properly (UTF-8 default).
+- Batch operations should include progress reporting for large operations.
+
