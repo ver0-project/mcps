@@ -36,7 +36,8 @@
 		"lint": "eslint",
 		"lint:fix": "eslint --fix",
 		"test": "vitest --run",
-		"test:coverage": "vitest --run --coverage"
+		"test:coverage": "vitest --run --coverage",
+		"inspect": "yarn dlx @modelcontextprotocol/inspector node dist/index.js"
 	},
 	"dependencies": {
 		"@modelcontextprotocol/sdk": "^1.12.3",

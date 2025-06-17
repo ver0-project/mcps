@@ -7,6 +7,13 @@ import {statPath} from './stat.js';
 vi.mock('node:fs');
 vi.mock('node:fs/promises');
 
+/**
+ * Validates if a string is a valid ISO timestamp
+ */
+function expectISOTimestamp(timestamp: string): void {
+	expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
+}
+
 describe('statPath', () => {
 	beforeEach(() => {
 		// reset the state of in-memory fs
@@ -30,9 +37,18 @@ describe('statPath', () => {
 			if (result.type === 'file') {
 				expect(result.size).toBe(testContent.length);
 			}
-			expect(typeof result.created).toBe('number');
-			expect(typeof result.modified).toBe('number');
-			expect(typeof result.permissions).toBe('number');
+
+			// Verify ISO timestamp format
+			expectISOTimestamp(result.created);
+			expectISOTimestamp(result.modified);
+
+			// Verify 3-digit octal permissions
+			expect(result.permissions).toMatch(/^\d{3}$/);
+			expect(result.permissions).toHaveLength(3);
+
+			// Verify uid/gid are numbers
+			expect(typeof result.uid).toBe('number');
+			expect(typeof result.gid).toBe('number');
 		});
 
 		it('should handle files with different sizes', async () => {
@@ -50,9 +66,11 @@ describe('statPath', () => {
 			if (result.type === 'file') {
 				expect(result.size).toBe(largeContent.length);
 			}
-			expect(typeof result.created).toBe('number');
-			expect(typeof result.modified).toBe('number');
-			expect(typeof result.permissions).toBe('number');
+			expectISOTimestamp(result.created);
+			expectISOTimestamp(result.modified);
+			expect(result.permissions).toMatch(/^\d{3}$/);
+			expect(typeof result.uid).toBe('number');
+			expect(typeof result.gid).toBe('number');
 		});
 
 		it('should handle empty files', async () => {
@@ -69,9 +87,11 @@ describe('statPath', () => {
 			if (result.type === 'file') {
 				expect(result.size).toBe(0);
 			}
-			expect(typeof result.created).toBe('number');
-			expect(typeof result.modified).toBe('number');
-			expect(typeof result.permissions).toBe('number');
+			expectISOTimestamp(result.created);
+			expectISOTimestamp(result.modified);
+			expect(result.permissions).toMatch(/^\d{3}$/);
+			expect(typeof result.uid).toBe('number');
+			expect(typeof result.gid).toBe('number');
 		});
 	});
 
@@ -87,9 +107,11 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(testPath);
 			expect(result.type).toBe('directory');
-			expect(typeof result.created).toBe('number');
-			expect(typeof result.modified).toBe('number');
-			expect(typeof result.permissions).toBe('number');
+			expectISOTimestamp(result.created);
+			expectISOTimestamp(result.modified);
+			expect(result.permissions).toMatch(/^\d{3}$/);
+			expect(typeof result.uid).toBe('number');
+			expect(typeof result.gid).toBe('number');
 		});
 
 		it('should handle empty directories', async () => {
@@ -104,9 +126,11 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(testPath);
 			expect(result.type).toBe('directory');
-			expect(typeof result.created).toBe('number');
-			expect(typeof result.modified).toBe('number');
-			expect(typeof result.permissions).toBe('number');
+			expectISOTimestamp(result.created);
+			expectISOTimestamp(result.modified);
+			expect(result.permissions).toMatch(/^\d{3}$/);
+			expect(typeof result.uid).toBe('number');
+			expect(typeof result.gid).toBe('number');
 		});
 
 		it('should handle nested directories', async () => {
@@ -120,6 +144,52 @@ describe('statPath', () => {
 
 			expect(result.type).toBe('directory');
 			expect(result.path).toBe(testPath);
+			// Verify all fields are present with correct format
+			expectISOTimestamp(result.created);
+			expectISOTimestamp(result.modified);
+			expect(result.permissions).toMatch(/^\d{3}$/);
+			expect(typeof result.uid).toBe('number');
+			expect(typeof result.gid).toBe('number');
+		});
+	});
+
+	describe('field validation', () => {
+		it('should ensure permissions are always 3 digits', async () => {
+			const testPath = '/test/permissions.txt';
+			vol.fromJSON({[testPath]: 'content'});
+
+			const result = await statPath(testPath);
+
+			// Permissions should always be exactly 3 digits with leading zeros if needed
+			expect(result.permissions).toHaveLength(3);
+			expect(result.permissions).toMatch(/^[0-7]{3}$/);
+		});
+
+		it('should return valid ISO timestamps', async () => {
+			const testPath = '/test/timestamps.txt';
+			vol.fromJSON({[testPath]: 'content'});
+
+			const result = await statPath(testPath);
+
+			// Verify timestamps can be parsed as valid dates
+			expect(new Date(result.created).getTime()).toBeGreaterThan(0);
+			expect(new Date(result.modified).getTime()).toBeGreaterThan(0);
+
+			// Verify ISO format
+			expect(result.created.endsWith('Z')).toBe(true);
+			expect(result.modified.endsWith('Z')).toBe(true);
+		});
+
+		it('should return consistent uid/gid types', async () => {
+			const testPath = '/test/ownership.txt';
+			vol.fromJSON({[testPath]: 'content'});
+
+			const result = await statPath(testPath);
+
+			expect(Number.isInteger(result.uid)).toBe(true);
+			expect(Number.isInteger(result.gid)).toBe(true);
+			expect(result.uid).toBeGreaterThanOrEqual(0);
+			expect(result.gid).toBeGreaterThanOrEqual(0);
 		});
 	});
 
@@ -151,6 +221,8 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(testPath);
 			expect(result.type).toBe('directory');
+			expectISOTimestamp(result.created);
+			expect(result.permissions).toMatch(/^\d{3}$/);
 		});
 
 		it('should handle unicode paths', async () => {
@@ -164,6 +236,8 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(testPath);
 			expect(result.type).toBe('file');
+			expectISOTimestamp(result.created);
+			expect(result.permissions).toMatch(/^\d{3}$/);
 		});
 
 		it('should handle very deep paths', async () => {
@@ -177,6 +251,8 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(deepPath);
 			expect(result.type).toBe('file');
+			expectISOTimestamp(result.created);
+			expect(result.permissions).toMatch(/^\d{3}$/);
 		});
 
 		it('should handle paths with dots and double dots', async () => {
@@ -190,6 +266,8 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(testPath);
 			expect(result.type).toBe('file');
+			expectISOTimestamp(result.created);
+			expect(result.permissions).toMatch(/^\d{3}$/);
 		});
 
 		it('should handle files with no extension', async () => {
@@ -203,6 +281,8 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(testPath);
 			expect(result.type).toBe('file');
+			expectISOTimestamp(result.created);
+			expect(result.permissions).toMatch(/^\d{3}$/);
 		});
 
 		it('should handle very long filenames', async () => {
@@ -217,6 +297,8 @@ describe('statPath', () => {
 
 			expect(result.path).toBe(testPath);
 			expect(result.type).toBe('file');
+			expectISOTimestamp(result.created);
+			expect(result.permissions).toMatch(/^\d{3}$/);
 		});
 	});
 });

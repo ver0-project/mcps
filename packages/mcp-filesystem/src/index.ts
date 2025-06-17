@@ -1,13 +1,22 @@
 import {McpServer} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {StdioServerTransport} from '@modelcontextprotocol/sdk/server/stdio.js';
+import {FileStatTool} from './tools/stat.js';
 
-const server = new McpServer({
-	name: 'mcp-filesystem',
-	version: '0.1.0',
-});
+const server = new McpServer(
+	{
+		name: 'mcp-filesystem',
+		version: '0.1.0',
+	},
+	{
+		instructions: 'This MCP server provides tools for filesystem operations.',
+	}
+);
+
+// Register filesystem tools
+new FileStatTool().register(server);
 
 /**
- * TODO: Register filesystem tools here
+ * TODO: Register additional filesystem tools here
  * Tools to implement:
  * - get_file_info (stats)
  * - read_file (read)

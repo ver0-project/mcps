@@ -3,9 +3,11 @@ import fs from 'node:fs/promises';
 export type PathStats = {
 	path: string;
 	type: 'file' | 'directory' | 'symlink';
-	created: number;
-	modified: number;
-	permissions: number;
+	created: string;
+	modified: string;
+	permissions: string;
+	uid: number;
+	gid: number;
 } & (
 	| {
 			type: 'file';
@@ -30,14 +32,23 @@ export async function statPath(fpath: string): Promise<PathStats> {
 		throw new Error(`Path does not exist`);
 	}
 
+	const created = stats.birthtime.toISOString();
+	const modified = stats.mtime.toISOString();
+	// we're ensuring that permissions are always 3 digits
+	// eslint-disable-next-line no-bitwise
+	const permissions = (stats.mode & 0o777).toString(8).padStart(3, '0');
+	const {uid, gid} = stats;
+
 	if (stats.isSymbolicLink()) {
 		return {
 			path: fpath,
 			type: 'symlink',
 			target: await fs.readlink(fpath),
-			created: stats.birthtime.getTime(),
-			modified: stats.mtime.getTime(),
-			permissions: stats.mode,
+			created,
+			modified,
+			permissions,
+			uid,
+			gid,
 		};
 	}
 
@@ -46,9 +57,11 @@ export async function statPath(fpath: string): Promise<PathStats> {
 			path: fpath,
 			type: 'file',
 			size: stats.size,
-			created: stats.birthtime.getTime(),
-			modified: stats.mtime.getTime(),
-			permissions: stats.mode,
+			created,
+			modified,
+			permissions,
+			uid,
+			gid,
 		};
 	}
 
@@ -56,9 +69,11 @@ export async function statPath(fpath: string): Promise<PathStats> {
 		return {
 			path: fpath,
 			type: 'directory',
-			created: stats.birthtime.getTime(),
-			modified: stats.mtime.getTime(),
-			permissions: stats.mode,
+			created,
+			modified,
+			permissions,
+			uid,
+			gid,
 		};
 	}
 
