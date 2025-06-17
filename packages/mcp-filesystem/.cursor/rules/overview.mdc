@@ -1,0 +1,13 @@
+---
+description: 'APPLY when working with mcp-filesystem package TO understand package structure, architecture, available tools, and development guidelines'
+globs:
+alwaysApply: true
+---
+# @ver0/mcp-filesystem – Overview Rule
+
+## Context
+
+- This rule is injected whenever files under `packages/mcp-filesystem` are referenced.
+- It gives the AI a quick mental model of the package so it can navigate and edit confidently.
+- Use it for orientation; it is not exhaustive documentation.
+
