@@ -44,7 +44,7 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
-		"@types/node": "^24.0.3",
+		"@types/node": "^24.0.4",
 		"@types/turndown": "^5.0.5",
 		"@ver0/eslint-config": "^1.2.2",
 		"@ver0/eslint-formatter-gha": "^1.0.1",
