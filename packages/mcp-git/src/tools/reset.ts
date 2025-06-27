@@ -5,7 +5,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git reset input schema constant
 export const GIT_RESET_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	target: z
 		.string()
 		.optional()

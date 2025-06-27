@@ -6,7 +6,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git log input schema constant
 export const GIT_LOG_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	maxCount: z.number().int().min(1).optional().describe('Limit the number of commits to output (-n, --max-count)'),
 	skip: z
 		.number()

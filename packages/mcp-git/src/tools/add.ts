@@ -5,7 +5,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git add input schema constant
 export const GIT_ADD_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	files: z.array(z.string()).describe('List of pathspecs to add'),
 };
 

@@ -6,7 +6,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git status input schema constant
 export const GIT_STATUS_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	short: z.boolean().optional().describe('Give the output in the short-format (-s, --short)'),
 	branch: z.boolean().optional().describe('Show the branch and tracking info even in short-format (-b, --branch)'),
 	showStash: z.boolean().optional().describe('Show the number of entries currently stashed away (--show-stash)'),

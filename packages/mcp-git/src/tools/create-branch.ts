@@ -5,7 +5,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git create branch input schema constant
 export const GIT_CREATE_BRANCH_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	branchName: z.string().describe('Name of the new branch to create'),
 	startPoint: z
 		.string()

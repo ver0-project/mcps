@@ -6,7 +6,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git checkout input schema constant synced with git-checkout documentation
 export const GIT_CHECKOUT_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	target: z.string().describe('Branch name, commit hash, or tag to checkout'),
 	force: z.boolean().optional().describe('Force checkout, throw away local modifications (-f, --force)'),
 	merge: z

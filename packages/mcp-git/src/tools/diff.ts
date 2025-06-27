@@ -5,7 +5,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git diff input schema constant
 export const GIT_DIFF_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	from: z.string().optional().describe('Source commit, branch, or tag (defaults to working directory)'),
 	to: z.string().optional().describe('Target commit, branch, or tag (defaults to HEAD)'),
 	pathspec: z.array(z.string()).optional().describe('Limit diff to specific paths'),

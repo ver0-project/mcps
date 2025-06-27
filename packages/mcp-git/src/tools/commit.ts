@@ -6,7 +6,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git commit input schema constant
 export const GIT_COMMIT_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	message: z.string().describe('Commit message (-m, --message)'),
 	all: z.boolean().optional().describe('Automatically stage modified and deleted files (-a, --all)'),
 	reuseMessage: z.string().optional().describe('Reuse message from existing commit (-C, --reuse-message)'),

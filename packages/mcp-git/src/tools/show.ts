@@ -5,7 +5,9 @@ import type {ToolConfig} from '../types.js';
 
 // Git show input schema constant
 export const GIT_SHOW_INPUT_SCHEMA = {
-	repoPath: z.string().describe('Absolute path to the git repository'),
+	repoPath: z
+		.string()
+		.describe('Absolute path to the git repository. Path must be a valid system path in the style of the host OS.'),
 	commit: z.string().optional().describe('Commit hash, branch, or tag to show (defaults to HEAD)'),
 	format: z
 		.enum(['oneline', 'short', 'medium', 'full', 'fuller', 'email', 'raw'])
