@@ -1,12 +1,8 @@
 import {buildConfig} from '@ver0/eslint-config';
+import {defineConfig, globalIgnores} from 'eslint/config';
 
-/** @typedef {import("eslint").Linter} Linter */
-
-/** @type {Linter.Config[]} */
-const cfg = [
-	{
-		ignores: ['dist', 'node_modules', '.yarn', 'coverage'],
-	},
+export default defineConfig(
+	globalIgnores(['dist', 'node_modules', '.yarn', 'coverage']),
 	...buildConfig({
 		globals: 'node',
 		prettier: true,
@@ -23,9 +19,7 @@ const cfg = [
 	{
 		files: ['**/*.js', '**/*.ts'],
 		rules: {
-			'n/no-missing-import': 'off',
+			'n/no-missing-import': 'off', // mcp sdk has weird exports definition, that trips this rule
 		},
-	},
-];
-
-export default cfg;
+	}
+);

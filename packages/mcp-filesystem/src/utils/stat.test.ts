@@ -66,6 +66,7 @@ describe('statPath', () => {
 			if (result.type === 'file') {
 				expect(result.size).toBe(largeContent.length);
 			}
+
 			expectISOTimestamp(result.created);
 			expectISOTimestamp(result.modified);
 			expect(result.permissions).toMatch(/^\d{3}$/);
@@ -87,6 +88,7 @@ describe('statPath', () => {
 			if (result.type === 'file') {
 				expect(result.size).toBe(0);
 			}
+
 			expectISOTimestamp(result.created);
 			expectISOTimestamp(result.modified);
 			expect(result.permissions).toMatch(/^\d{3}$/);

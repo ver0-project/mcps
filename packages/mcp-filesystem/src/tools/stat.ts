@@ -2,7 +2,6 @@ import path from 'node:path';
 import type {McpServer, ToolCallback} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {z} from 'zod';
 import {ErrorCode, McpError} from '@modelcontextprotocol/sdk/types.js';
-import {FilesystemError} from '../types.js';
 import type {ToolConfig} from '../types.js';
 import {statPath} from '../utils/stat.js';
 

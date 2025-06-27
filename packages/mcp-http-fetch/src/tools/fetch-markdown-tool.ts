@@ -78,6 +78,7 @@ export class FetchMarkdownTool {
 		if (!options.headers.has('Accept')) {
 			options.headers.set('Accept', MARKDOWN_ACCEPT_HEADER);
 		}
+
 		if (!options.headers.has('User-Agent')) {
 			options.headers.set('User-Agent', BROWSER_USER_AGENT);
 		}

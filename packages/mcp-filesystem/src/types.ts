@@ -15,7 +15,7 @@ export class FilesystemError extends Error {
 	constructor(
 		message: string,
 		public readonly code: string,
-		public readonly path?: string,
+		public readonly path?: string
 	) {
 		super(message);
 		this.name = 'FilesystemError';
@@ -25,7 +25,7 @@ export class FilesystemError extends Error {
 /**
  * File/directory statistics interface
  */
-export interface FileStats {
+export type FileStats = {
 	path: string;
 	type: 'file' | 'directory' | 'symlink';
 	size: number;
@@ -33,35 +33,35 @@ export interface FileStats {
 	modified: string;
 	permissions: string;
 	exists: boolean;
-}
+};
 
 /**
  * Directory listing entry
  */
-export interface DirectoryEntry {
+export type DirectoryEntry = {
 	name: string;
 	type: 'file' | 'directory';
 	size?: number;
 	modified?: string;
-}
+};
 
 /**
  * File read result with metadata
  */
-export interface FileReadResult {
+export type FileReadResult = {
 	path: string;
 	content: string;
 	encoding: string;
 	size: number;
-}
+};
 
 /**
  * Search result entry
  */
-export interface SearchResult {
+export type SearchResult = {
 	path: string;
 	type: 'file' | 'directory';
 	matches?: number;
 	line?: number;
 	content?: string;
-}
+};

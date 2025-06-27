@@ -60,12 +60,15 @@ export class GitDiffTool {
 		if (input.staged) {
 			options.push('--cached');
 		}
+
 		if (input.nameOnly) {
 			options.push('--name-only');
 		}
+
 		if (input.nameStatus) {
 			options.push('--name-status');
 		}
+
 		if (input.stat) {
 			options.push('--stat');
 		}

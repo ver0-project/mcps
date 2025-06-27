@@ -69,6 +69,7 @@ export class FetchHtmlTool {
 		if (!options.headers.has('Accept')) {
 			options.headers.set('Accept', HTML_ACCEPT_HEADER);
 		}
+
 		if (!options.headers.has('User-Agent')) {
 			options.headers.set('User-Agent', BROWSER_USER_AGENT);
 		}

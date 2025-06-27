@@ -22,7 +22,7 @@ new ListDirectoryTool().register(server);
  * Tools implemented:
  * - stat (get file/directory stats) ✅
  * - list-directory (list directory contents) ✅ (skeleton)
- * 
+ *
  * Tools to implement:
  * - read_file (read)
  * - read_multiple_files (read-many)

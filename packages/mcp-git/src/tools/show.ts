@@ -62,12 +62,15 @@ export class GitShowTool {
 		if (input.format) {
 			args.push(`--pretty=${input.format}`);
 		}
+
 		if (input.nameOnly) {
 			args.push('--name-only');
 		}
+
 		if (input.nameStatus) {
 			args.push('--name-status');
 		}
+
 		if (input.stat) {
 			args.push('--stat');
 		}
