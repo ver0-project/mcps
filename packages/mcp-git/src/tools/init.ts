@@ -41,9 +41,11 @@ export class GitInitTool {
 		if (input.bare) {
 			options.push('--bare');
 		}
+
 		if (input.initialBranch) {
 			options.push('--initial-branch', input.initialBranch);
 		}
+
 		if (input.template) {
 			options.push('--template', input.template);
 		}

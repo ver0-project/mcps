@@ -6,11 +6,11 @@ An MCP (Model Context Protocol) server that provides
 
 ```json
 {
-  "mcpServers": {
-    "git": {
-      "command": "npx",
-      "args": ["-y", "@ver0/mcp-question"]
-    }
-  }
+	"mcpServers": {
+		"git": {
+			"command": "npx",
+			"args": ["-y", "@ver0/mcp-question"]
+		}
+	}
 }
 ```

@@ -72,7 +72,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					untrackedFiles: true,
-				})
+				}),
 			).toEqual({
 				'--untracked-files': null,
 			});
@@ -81,7 +81,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					untrackedFiles: false,
-				})
+				}),
 			).toEqual({
 				'--untracked-files': 'no',
 			});
@@ -90,7 +90,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					untrackedFiles: 'all',
-				})
+				}),
 			).toEqual({
 				'--untracked-files': 'all',
 			});
@@ -111,7 +111,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					ignored: true,
-				})
+				}),
 			).toEqual({
 				'--ignored': null,
 			});
@@ -120,7 +120,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					ignored: false,
-				})
+				}),
 			).toEqual({
 				'--no-ignored': null,
 			});
@@ -129,7 +129,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					ignored: 'matching',
-				})
+				}),
 			).toEqual({
 				'--ignored': 'matching',
 			});
@@ -140,7 +140,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					aheadBehind: true,
-				})
+				}),
 			).toEqual({
 				'--ahead-behind': null,
 			});
@@ -149,7 +149,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					aheadBehind: false,
-				})
+				}),
 			).toEqual({
 				'--no-ahead-behind': null,
 			});
@@ -160,7 +160,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					renames: true,
-				})
+				}),
 			).toEqual({
 				'--renames': null,
 			});
@@ -169,7 +169,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					renames: false,
-				})
+				}),
 			).toEqual({
 				'--no-renames': null,
 			});
@@ -180,7 +180,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					findRenames: true,
-				})
+				}),
 			).toEqual({
 				'--find-renames': null,
 			});
@@ -189,7 +189,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					findRenames: false,
-				})
+				}),
 			).toEqual({
 				'--no-find-renames': null,
 			});
@@ -198,7 +198,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					findRenames: 50,
-				})
+				}),
 			).toEqual({
 				'--find-renames': 50,
 			});
@@ -209,7 +209,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					column: true,
-				})
+				}),
 			).toEqual({
 				'--column': null,
 			});
@@ -218,7 +218,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					column: false,
-				})
+				}),
 			).toEqual({
 				'--no-column': null,
 			});
@@ -227,7 +227,7 @@ describe('GitStatusTool', () => {
 				tool.inputToOptions({
 					repoPath: '/test/repo',
 					column: 'auto',
-				})
+				}),
 			).toEqual({
 				'--column': 'auto',
 			});
