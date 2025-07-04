@@ -1558,6 +1558,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@ver0/mcp-question@workspace:packages/mcp-question":
+  version: 0.0.0-use.local
+  resolution: "@ver0/mcp-question@workspace:packages/mcp-question"
+  dependencies:
+    "@modelcontextprotocol/sdk": "npm:^1.15.0"
+    "@types/node": "npm:^24.0.10"
+    "@ver0/eslint-config": "npm:^1.2.2"
+    "@ver0/eslint-formatter-gha": "npm:^1.0.1"
+    "@vitest/coverage-v8": "npm:^3.2.4"
+    eslint: "npm:^9.30.1"
+    rimraf: "npm:^6.0.1"
+    typescript: "npm:^5.8.3"
+    vitest: "npm:^3.2.4"
+    zod: "npm:^3.23.8"
+  bin:
+    mcp-question: dist/index.js
+  languageName: unknown
+  linkType: soft
+
 "@vitest/coverage-v8@npm:^3.2.4":
   version: 3.2.4
   resolution: "@vitest/coverage-v8@npm:3.2.4"
