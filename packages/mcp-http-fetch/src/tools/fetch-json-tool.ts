@@ -32,6 +32,7 @@ export class FetchJsonTool {
 		if (!options.headers.has('Accept')) {
 			options.headers.set('Accept', JSON_ACCEPT_HEADER);
 		}
+
 		if (!options.headers.has('User-Agent')) {
 			options.headers.set('User-Agent', BROWSER_USER_AGENT);
 		}

@@ -1,12 +1,8 @@
 import {buildConfig} from '@ver0/eslint-config';
+import {defineConfig, globalIgnores} from 'eslint/config';
 
-/** @typedef {import("eslint").Linter} Linter */
-
-/** @type {Linter.Config[]} */
-const cfg = [
-	{
-		ignores: ['dist', 'node_modules', '.yarn', 'coverage'],
-	},
+export default defineConfig(
+	globalIgnores(['dist', 'node_modules', '.yarn', 'coverage']),
 	...buildConfig({
 		globals: 'node',
 		prettier: true,
@@ -26,6 +22,4 @@ const cfg = [
 			'n/no-missing-import': 'off',
 		},
 	},
-];
-
-export default cfg;
+);
