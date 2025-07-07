@@ -1530,7 +1530,7 @@ __metadata:
     simple-git: "npm:^3.28.0"
     typescript: "npm:^5.8.3"
     vitest: "npm:^3.2.4"
-    zod: "npm:^3.23.8"
+    zod: "npm:^3.25.74"
   bin:
     mcp-git: dist/index.js
   languageName: unknown
@@ -1552,7 +1552,7 @@ __metadata:
     turndown: "npm:^7.2.0"
     typescript: "npm:^5.8.3"
     vitest: "npm:^3.2.4"
-    zod: "npm:^3.23.8"
+    zod: "npm:^3.25.74"
   bin:
     mcp-http-fetch: dist/index.js
   languageName: unknown
@@ -7438,6 +7438,13 @@ __metadata:
   version: 3.25.64
   resolution: "zod@npm:3.25.64"
   checksum: 10c0/00d76093a999e377e4ffd037fa7185e861c35917e8c4272f514115c206a0654995168f57fb71708b11e0a9243206d988b7f63b543404e1796402e50d346a6bd7
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.25.74":
+  version: 3.25.74
+  resolution: "zod@npm:3.25.74"
+  checksum: 10c0/59e38b046ac333b5bd1ba325a83b6798721227cbfb1e69dfc7159bd7824b904241ab923026edb714fafefec3624265ae374a70aee9a5a45b365bd31781ffa105
   languageName: node
   linkType: hard
 
