@@ -1,7 +1,7 @@
 {
 	"name": "@ver0/mcp-question",
 	"private": true,
-	"description": "MCP tools allowing agents to ask user questions and get answers.",
+	"description": "MCP tools allowing agents to ask user questions and get answers in situations of unclear context or decision making.",
 	"keywords": [
 		"mcp",
 		"talkback",
