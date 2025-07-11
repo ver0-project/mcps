@@ -48,6 +48,8 @@ export type QuestionMultipleChoice = {
 	minSelections?: number;
 	/** Maximum number of selections allowed (default: 1, or options.length if allowMultiple) */
 	maxSelections?: number;
+	/** Whether to allow user to provide their own variant/answer (default: true) */
+	allowOwnVariant?: boolean;
 } & BaseQuestion;
 
 /**
@@ -71,11 +73,13 @@ export type Questionnaire = {
 };
 
 /**
- * Response to an open-ended question.
+ * Response to a question.
  */
 export type QuestionResponse = {
 	questionId: string;
 	response: string[];
+	/** Custom text provided when user selected "other" option */
+	customText?: string;
 };
 
 /**

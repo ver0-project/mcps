@@ -194,6 +194,18 @@ class QuestionnaireRunner {
 			checked: option.id === question.defaultOptionID,
 		}));
 
+		// Add "Other" option if allowOwnVariant is true (default)
+		const allowOwnVariant = question.allowOwnVariant ?? true;
+		const otherOptionId = '__other__';
+
+		if (allowOwnVariant) {
+			choices.push({
+				name: chalk.italic('Other (specify your own answer)'),
+				value: otherOptionId,
+				checked: false,
+			});
+		}
+
 		if (question.allowMultiple) {
 			// Use checkbox for multiple selections
 			const answers = await checkbox({
@@ -213,9 +225,28 @@ class QuestionnaireRunner {
 				},
 			});
 
+			// Handle "Other" selection for multiple choice
+			let customText: string | undefined;
+			const finalAnswers = answers.filter((answer) => answer !== otherOptionId);
+
+			if (answers.includes(otherOptionId)) {
+				customText = await input({
+					message: 'Please specify your own answer:',
+					validate(value: string) {
+						if (!value.trim()) {
+							return 'Please provide a custom answer';
+						}
+
+						return true;
+					},
+				});
+				finalAnswers.push(customText);
+			}
+
 			return {
 				questionId: question.id,
-				response: answers,
+				response: finalAnswers,
+				customText,
 			};
 		}
 
@@ -225,6 +256,26 @@ class QuestionnaireRunner {
 			choices,
 			default: question.defaultOptionID,
 		});
+
+		// Handle "Other" selection for single choice
+		if (answer === otherOptionId) {
+			const customText = await input({
+				message: 'Please specify your own answer:',
+				validate(value: string) {
+					if (!value.trim()) {
+						return 'Please provide a custom answer';
+					}
+
+					return true;
+				},
+			});
+
+			return {
+				questionId: question.id,
+				response: [customText],
+				customText,
+			};
+		}
 
 		return {
 			questionId: question.id,

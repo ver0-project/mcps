@@ -32,6 +32,10 @@ const questionMultipleChoiceSchema = z.object({
 	allowMultiple: z.boolean().optional().describe('Whether multiple selections are allowed'),
 	minSelections: z.number().int().min(1).optional().describe('Minimum number of selections required'),
 	maxSelections: z.number().int().min(1).optional().describe('Maximum number of selections allowed'),
+	allowOwnVariant: z
+		.boolean()
+		.optional()
+		.describe('Whether to allow user to provide their own variant/answer (default: true)'),
 });
 
 // Union schema for all question types
@@ -49,7 +53,11 @@ export const ASK_QUESTION_INPUT_SCHEMA = {
 export class AskQuestionTool {
 	readonly config: ToolConfig<typeof ASK_QUESTION_INPUT_SCHEMA, never> = {
 		description:
-			'Ask user questions through terminal interface and get responses. Supports text input and multiple choice questions.',
+			'Interactive user questionnaire system that spawns a terminal window for direct user input. ' +
+			'Supports open-ended text questions and multiple choice questions with customizable options. ' +
+			'Handles validation, defaults, and multi-selection scenarios. ' +
+			'Returns structured responses with user input and metadata. ' +
+			'Great to use when you need to ask a question to the user and get a response in situations of unclear context or decision making.',
 		inputSchema: ASK_QUESTION_INPUT_SCHEMA,
 		annotations: {
 			title: 'Ask Question',
