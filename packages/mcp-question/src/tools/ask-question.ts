@@ -1,7 +1,10 @@
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
 import type {McpServer, ToolCallback} from '@modelcontextprotocol/sdk/server/mcp.js';
 import {z} from 'zod';
-import type {ToolConfig} from '../types.js';
-import {TerminalQuestionnaire} from '../terminal/terminal.js';
+import {ErrorCode, McpError} from '@modelcontextprotocol/sdk/types.js';
+import type {ToolConfig, Questionnaire, QuestionnaireResponse} from '../types.js';
+import {TerminalSpawner} from '../terminal/spawn-terminal.js';
 
 // Zod schema for question option validation
 const questionOptionSchema = z.object({
@@ -65,10 +68,12 @@ export class AskQuestionTool {
 		},
 	};
 
-	private readonly terminalQuestionnaire: TerminalQuestionnaire;
+	private readonly questionnaireWorkloadPath: string;
 
 	constructor() {
-		this.terminalQuestionnaire = new TerminalQuestionnaire();
+		// Get the path to the questionnaire workload
+		const currentDir = path.dirname(fileURLToPath(import.meta.url));
+		this.questionnaireWorkloadPath = path.join(currentDir, '../ui/runner.js');
 	}
 
 	get name() {
@@ -83,66 +88,49 @@ export class AskQuestionTool {
 	 * Handle the ask question tool request
 	 */
 	readonly #handle: ToolCallback<typeof ASK_QUESTION_INPUT_SCHEMA> = async (input) => {
-		try {
-			// Validate input and create questionnaire
-			const questionnaire = {
-				questions: input.questions,
-			};
+		// Validate input and create questionnaire
+		const questionnaire: Questionnaire = {
+			questions: input.questions,
+		};
 
-			// Execute questionnaire through terminal interface
-			const response = await this.terminalQuestionnaire.execute(questionnaire);
+		// Create terminal spawner with questionnaire workload
+		const spawner = new TerminalSpawner<Questionnaire, QuestionnaireResponse>({
+			scriptPath: this.questionnaireWorkloadPath,
+			inputData: questionnaire,
+			ttlMs: 300_000, // 5 minutes timeout
+		});
 
-			// Check if questionnaire was cancelled or timed out
-			if (response.cancelled) {
-				return {
-					isError: true,
-					content: [
-						{
-							type: 'text',
-							text: 'Questionnaire was cancelled by the user.',
-						},
-					],
-				};
-			}
+		// Execute questionnaire through terminal interface
+		const result = await spawner.spawn().catch((error: unknown) => {
+			throw new McpError(ErrorCode.InternalError, `Failed to spawn terminal for questionnaire.\n${String(error)}`);
+		});
 
-			if (response.timedOut) {
-				return {
-					isError: true,
-					content: [
-						{
-							type: 'text',
-							text: 'Questionnaire timed out waiting for user input.',
-						},
-					],
-				};
-			}
-
-			// Return successful response
-			return {
-				content: [
-					{
-						type: 'text',
-						text: 'Questionnaire completed successfully.',
-					},
-					{
-						type: 'text',
-						text: JSON.stringify(response, null, 2),
-					},
-				],
-			};
-		} catch (error) {
-			// Handle unexpected errors
-			const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-
-			return {
-				isError: true,
-				content: [
-					{
-						type: 'text',
-						text: `Failed to execute questionnaire: ${errorMessage}`,
-					},
-				],
-			};
+		// Check if questionnaire was cancelled or timed out
+		if (result.timedOut) {
+			throw new McpError(ErrorCode.RequestTimeout, 'Questionnaire timed out waiting for user input.');
 		}
+
+		if (!result.isSuccess) {
+			throw new McpError(ErrorCode.InternalError, `Questionnaire failed for unknown reason.\n ${String(result.error)}`);
+		}
+
+		// Check if user cancelled
+		if (result.output.cancelled) {
+			throw new McpError(ErrorCode.InvalidRequest, 'Questionnaire was cancelled by the user.');
+		}
+
+		// Return successful response
+		return {
+			content: [
+				{
+					type: 'text',
+					text: 'Questionnaire completed successfully.',
+				},
+				{
+					type: 'text',
+					text: JSON.stringify(result.output, null, 2),
+				},
+			],
+		};
 	};
 }

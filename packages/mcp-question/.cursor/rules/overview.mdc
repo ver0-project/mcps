@@ -25,7 +25,7 @@ src/
     ask-question.ts    // Main tool implementation with Zod schemas
   terminal/
     terminal.ts        // Terminal spawning and process management
-    runner.ts          // Questionnaire runner executed in spawned terminal
+    runner.mts          // Questionnaire runner executed in spawned terminal
 ```
 
 ## Question Types
