@@ -33,8 +33,7 @@ The server provides the following Git operations:
 
 10. **`diff`** - Show differences between commits, branches, or files
 
-> [!NOTE]
-> Server intentionally lacks push operations to avoid security risks.
+> [!NOTE] Server intentionally lacks push operations to avoid security risks.
 
 ## Tool Details
 
@@ -186,11 +185,11 @@ Initializes a new Git repository.
 
 ```json
 {
-  "mcpServers": {
-    "git": {
-      "command": "npx",
-      "args": ["-y", "@ver0/mcp-git"]
-    }
-  }
+	"mcpServers": {
+		"git": {
+			"command": "npx",
+			"args": ["-y", "@ver0/mcp-git"]
+		}
+	}
 }
 ```

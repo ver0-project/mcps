@@ -37,7 +37,7 @@ export const GIT_LOG_INPUT_SCHEMA = {
 		.boolean()
 		.optional()
 		.describe(
-			'Show only a partial prefix instead of the full 40-byte hexadecimal commit object name (--abbrev-commit)'
+			'Show only a partial prefix instead of the full 40-byte hexadecimal commit object name (--abbrev-commit)',
 		),
 	noMerges: z.boolean().optional().describe('Do not print commits with more than one parent (--no-merges)'),
 	merges: z.boolean().optional().describe('Print only merge commits (--merges)'),

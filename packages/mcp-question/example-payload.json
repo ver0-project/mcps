@@ -1,0 +1,124 @@
+{
+	"questions": [
+		{
+			"type": "open",
+			"id": "user_name",
+			"prompt": "What is your full name?",
+			"description": "Please enter your first and last name",
+			"placeholder": "John Doe",
+			"minLength": 2,
+			"maxLength": 50
+		},
+		{
+			"type": "multiple_choice",
+			"id": "favorite_language",
+			"prompt": "What is your favorite programming language?",
+			"description": "Select the programming language you enjoy working with most",
+			"options": [
+				{
+					"id": "typescript",
+					"label": "TypeScript",
+					"description": "Typed superset of JavaScript"
+				},
+				{
+					"id": "python",
+					"label": "Python",
+					"description": "High-level, interpreted programming language"
+				},
+				{
+					"id": "rust",
+					"label": "Rust",
+					"description": "Systems programming language focused on safety"
+				},
+				{
+					"id": "go",
+					"label": "Go",
+					"description": "Simple, fast, and reliable language by Google"
+				}
+			],
+			"defaultOptionID": "typescript",
+			"allowMultiple": false
+		},
+		{
+			"type": "open",
+			"id": "project_description",
+			"prompt": "Describe your current project",
+			"description": "Tell us about what you're building and what challenges you're facing",
+			"placeholder": "I'm working on a web application that...",
+			"minLength": 10,
+			"maxLength": 500
+		},
+		{
+			"type": "multiple_choice",
+			"id": "technologies",
+			"prompt": "Which technologies are you using in your project?",
+			"description": "Select all technologies that apply to your current project",
+			"options": [
+				{
+					"id": "react",
+					"label": "React",
+					"description": "JavaScript library for building user interfaces"
+				},
+				{
+					"id": "nodejs",
+					"label": "Node.js",
+					"description": "JavaScript runtime for server-side development"
+				},
+				{
+					"id": "database",
+					"label": "Database",
+					"description": "PostgreSQL, MySQL, MongoDB, etc."
+				},
+				{
+					"id": "docker",
+					"label": "Docker",
+					"description": "Containerization platform"
+				},
+				{
+					"id": "cloud",
+					"label": "Cloud Services",
+					"description": "AWS, Google Cloud, Azure, etc."
+				},
+				{
+					"id": "testing",
+					"label": "Testing Frameworks",
+					"description": "Jest, Vitest, Cypress, etc."
+				}
+			],
+			"allowMultiple": true,
+			"allowOwnVariant": true,
+			"minSelections": 1,
+			"maxSelections": 4
+		},
+		{
+			"type": "multiple_choice",
+			"id": "team_size",
+			"prompt": "What is your team size?",
+			"description": "Select the option that best describes your team",
+			"options": [
+				{
+					"id": "solo",
+					"label": "Solo Developer",
+					"description": "Working alone on the project"
+				},
+				{
+					"id": "small",
+					"label": "Small Team (2-5 people)",
+					"description": "A small collaborative team"
+				},
+				{
+					"id": "medium",
+					"label": "Medium Team (6-15 people)",
+					"description": "A medium-sized development team"
+				},
+				{
+					"id": "large",
+					"label": "Large Team (16+ people)",
+					"description": "A large organization or team"
+				}
+			],
+			"allowOwnVariant": false,
+			"defaultOptionID": "solo"
+		}
+	]
+}
